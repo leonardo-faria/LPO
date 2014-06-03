@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.Lpoo.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,6 +13,7 @@ public class TestScreen implements Screen {
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
+	private JumpEmInputProcessor inputProcessor;
 	private Jumper jump;
 	private Floor floor;
 	private Floor tr;
@@ -27,8 +28,9 @@ public class TestScreen implements Screen {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		
 		world.step(TIMESTEP, VelocityIterations, PositionIterations);
+		
 		
 		debugRenderer.render(world, camera.combined);
 		camera.update();
@@ -48,6 +50,10 @@ public class TestScreen implements Screen {
 	@Override
 	public void show() {
 		world = new World(new Vector2(0, -15f), true);
+		
+		inputProcessor = new JumpEmInputProcessor(world);
+		Gdx.input.setInputProcessor(inputProcessor);
+		
 		debugRenderer = new Box2DDebugRenderer();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() / 10,
 				Gdx.graphics.getHeight() / 10);
@@ -59,6 +65,7 @@ public class TestScreen implements Screen {
 		right = new Wall(world, 10, 0);
 		jump.getBody().applyTorque(1000, true);
 		jump.getBody().applyForceToCenter(10000, -20000, true);
+		
 	}
 
 	@Override
@@ -66,7 +73,7 @@ public class TestScreen implements Screen {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
