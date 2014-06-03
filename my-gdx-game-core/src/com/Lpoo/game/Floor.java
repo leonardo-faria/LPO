@@ -27,7 +27,6 @@ public class Floor {
 	  
 	  FixtureDef fixtureDef= new FixtureDef();
 	  fixtureDef.shape = shape;
-	  fixtureDef.restitution = 1f;
 	  fixtureDef.friction = 1f;
 	  
 	  body = world.createBody(bodyDef);

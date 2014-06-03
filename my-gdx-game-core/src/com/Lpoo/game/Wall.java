@@ -1,5 +1,6 @@
 package com.Lpoo.game;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -11,23 +12,24 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Wall {
 	public Body body;
 	Fixture fixture;
-	float cx, cy;
+	float cx, cy, height, width;
 
-	public Wall(World world, float cx, float cy) {
+	public Wall(World world, float cx, float cy, float height, float width, float angle) {
 
 		this.cx = cx;
 		this.cy = cy;
-
+		this.height=height;
+		this.width=width;
+		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set(cx, cy);
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox((float) 0.01, 20);
+		shape.setAsBox(width, height);
+		shape.setAsBox(width, height,new Vector2(cx,cy), angle);
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.restitution = 1f;
 		fixtureDef.friction = 1f;
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
