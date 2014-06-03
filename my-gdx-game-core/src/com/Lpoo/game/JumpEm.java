@@ -1,5 +1,4 @@
- package com.Lpoo.game;
-
+package com.Lpoo.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -7,15 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class JumpEm extends Game {
- SpriteBatch batch;
- @Override
- public void dispose() {
-  // TODO Auto-generated method stub
-  super.dispose();
- }
-
 	SpriteBatch batch;
-	
+
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
@@ -52,16 +44,14 @@ public class JumpEm extends Game {
 		return super.getScreen();
 	}
 
-
-
 	@Override
-	public void create () {
+	public void create() {
 		setScreen(new TestScreen());
-		
+
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		super.render();
 	}
 }
