@@ -15,12 +15,13 @@ public class Jumper{
 
  public Body body;
  Fixture fixture;
- float cx,cy;
+ float cx,cy,r;
  
- public Jumper(World world, float cx, float cy) {
+ public Jumper(World world, float cx, float cy, float r) {
   
   this.cx = cx;
   this.cy = cy;
+  this.r=r;
   
   BodyDef bodyDef = new BodyDef();
   bodyDef.type = BodyType.DynamicBody;
@@ -28,11 +29,11 @@ public class Jumper{
   
 
   CircleShape shape = new CircleShape();
-  shape.setRadius(1);
+  shape.setRadius(r);
   
   FixtureDef fixtureDef= new FixtureDef();
   fixtureDef.shape = shape;
-  fixtureDef.restitution = 1f;
+  fixtureDef.restitution = 0.7f;
   fixtureDef.friction = 1f;
   fixtureDef.density = 6;
   
