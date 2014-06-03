@@ -1,11 +1,11 @@
- package com.mygdx.game;
+ package com.Lpoo.game;
 
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class MyGdxGame extends Game {
+public class JumpEm extends Game {
  SpriteBatch batch;
  @Override
  public void dispose() {
