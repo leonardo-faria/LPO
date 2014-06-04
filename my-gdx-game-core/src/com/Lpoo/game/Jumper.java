@@ -17,7 +17,7 @@ public class Jumper{
  Fixture fixture;
  float cx,cy,r;
  
- public Jumper(World world, float cx, float cy, float r) {
+public Jumper(World world, float cx, float cy, float r) {
   
   this.cx = cx;
   this.cy = cy;
@@ -39,6 +39,7 @@ public class Jumper{
   
   body = world.createBody(bodyDef);
   fixture = body.createFixture(fixtureDef);
+  fixture.setUserData("Jumper");
  }
 
 public Body getBody() {

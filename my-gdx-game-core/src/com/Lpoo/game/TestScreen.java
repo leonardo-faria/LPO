@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 public class TestScreen implements Screen {
 
@@ -18,6 +20,7 @@ public class TestScreen implements Screen {
 	private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
 	private JumpEmInputProcessor inputProcessor;
+	private JumpEmCollision collisionProcessor;
 	private Jumper jumper;
 	private Jumper jumper2;
 	private Floor floor;
@@ -51,6 +54,16 @@ public class TestScreen implements Screen {
 			inputProcessor.setTouched(false);
 		}
 
+		Array<Body> bodies = new Array<Body>();
+		 world.getBodies(bodies);
+		 
+		 for(int i = 0; i < bodies.size; i++)
+		 {
+			 if(bodies.get(i).getUserData() instanceof String)
+				 world.destroyBody(bodies.get(i));
+				 
+		 }
+		
 		debugRenderer.render(world, camera.combined);
 		camera.update();
 	}
@@ -71,6 +84,8 @@ public class TestScreen implements Screen {
 		world = new World(new Vector2(0, -15f), true);
 
 		inputProcessor = new JumpEmInputProcessor(world);
+		collisionProcessor = new JumpEmCollision(world);
+		world.setContactListener(collisionProcessor);
 		Gdx.input.setInputProcessor(inputProcessor);
 
 		debugRenderer = new Box2DDebugRenderer();
