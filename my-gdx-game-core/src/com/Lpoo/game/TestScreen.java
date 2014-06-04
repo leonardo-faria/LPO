@@ -36,22 +36,34 @@ public class TestScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		world.step(TIMESTEP, VelocityIterations, PositionIterations);
-		
+
 		if(inputProcessor.getTouched())
 		{
-			int x0 = inputProcessor.getX0();
-			int y0 = inputProcessor.getY0();
-			int xf = inputProcessor.getXf();
-			int yf = inputProcessor.getYf();
+			float x0 = inputProcessor.getX0();
+			float y0 = inputProcessor.getY0();
+			float xf = inputProcessor.getXf();
+			float yf = inputProcessor.getYf();
 			Vector3 coord0 = new Vector3(x0, y0, 0);
 			Vector3 coordf = new Vector3(xf, yf, 0);
-			 camera.unproject(coord0);
-			 camera.unproject(coordf);
-			int width = (int) Math.abs((coord0.x-coordf.x)/2);
-			int height = (int) Math.abs((coord0.y-coordf.y)/2);
-			int cx = (int) ((coord0.x+coordf.x)/2);
-			int cy =  (int) ((coord0.x+coordf.x)/2);
+			camera.unproject(coord0);
+			camera.unproject(coordf);
+/*
+			ShapeRenderer sr = new ShapeRenderer();
+			sr.setColor(Color.BLACK);
+			sr.setProjectionMatrix(camera.combined);
+			sr.begin(ShapeType.Line);
+			sr.line(2, 2,5,5);
+			sr.end();
+
+			//world.createBody(def)*/
+			float width =  (coord0.x-coordf.x)/2;
 			
+			float height =  (coord0.y-coordf.y)/2;
+			float cx =  (coord0.x+coordf.x)/2;
+			float cy =   (coord0.y+coordf.y)/2;
+			String msg = "";
+			msg += coord0.x + "," + coord0.y + ","+ coordf.x + ","+ coordf.y + "\n";
+			System.out.print(msg);
 			test = new Wall(world, cx,cy,height,width, 0);
 			inputProcessor.setTouched(false);
 		}

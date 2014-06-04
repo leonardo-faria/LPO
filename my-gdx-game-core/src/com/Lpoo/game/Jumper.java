@@ -33,7 +33,7 @@ public class Jumper{
   
   FixtureDef fixtureDef= new FixtureDef();
   fixtureDef.shape = shape;
-  fixtureDef.restitution = 0.7f;
+  fixtureDef.restitution = 1f;
   fixtureDef.friction = 1f;
   fixtureDef.density = 6;
   

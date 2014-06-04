@@ -19,7 +19,7 @@ public class Floor {
 	  this.cy = cy;
 	  
 	  BodyDef bodyDef = new BodyDef();
-	  bodyDef.type = BodyType.KinematicBody;
+	  bodyDef.type = BodyType.StaticBody;
 	  bodyDef.position.set(cx, cy);
 	  
 	  PolygonShape shape = new PolygonShape();
