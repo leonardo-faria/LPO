@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class JumpEm extends Game {
  
-
+	
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub

@@ -25,7 +25,6 @@ public class Wall {
 		bodyDef.type = BodyType.StaticBody;
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(width, height);
 		shape.setAsBox(width, height,new Vector2(cx,cy), angle);
 
 		FixtureDef fixtureDef = new FixtureDef();
