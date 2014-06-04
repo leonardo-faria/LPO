@@ -1,16 +1,13 @@
 package com.Lpoo.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class JumpEm extends Game {
  
 	
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		super.dispose();
 	}
 
@@ -46,7 +43,7 @@ public class JumpEm extends Game {
 
 	@Override
 	public void create() {
-		setScreen(new TestScreen());
+		setScreen(new LogoSplash());
 
 	}
 
