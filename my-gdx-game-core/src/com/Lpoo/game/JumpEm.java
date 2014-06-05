@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 
 public class JumpEm extends Game {
  
+	public static final String TITLE =  "Jump'Em", VERSION = "ALPHA 0.1";
 	
 	@Override
 	public void dispose() {

@@ -1,8 +1,11 @@
 package com.Lpoo.game;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -40,13 +43,17 @@ public class LogoSplash implements Screen{
 		tweenManager = new TweenManager();
 		Tween.registerAccessor(Sprite.class, new SpriteAcessor());
 		
-		Texture splashTexture = new Texture("Welcome.png");
+		Texture splashTexture = new Texture("img/Welcome.png");
 		splash = new Sprite(splashTexture);
 		splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		Tween.set(splash, SpriteAcessor.ALPHA).target(0).start(tweenManager);
-		Tween.to(splash, SpriteAcessor.ALPHA, 2).target(1).start(tweenManager);
-		Tween.to(splash, SpriteAcessor.ALPHA, 2).target(0).delay(3).start(tweenManager);
+		Tween.to(splash, SpriteAcessor.ALPHA, 2).target(1).repeatYoyo(1, 1).setCallback(new TweenCallback() {
+			@Override
+			public void onEvent(int arg0, BaseTween<?> arg1) {
+				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+			}
+		}).start(tweenManager);
 	}
 
 	@Override
@@ -69,8 +76,8 @@ public class LogoSplash implements Screen{
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		batch.dispose();
+		splash.getTexture().dispose();
 	}
 
 }
