@@ -55,7 +55,7 @@ public class MainMenu implements Screen {
 
 		Gdx.input.setInputProcessor(stage);
 
-		atlas = new TextureAtlas("ui/button.pack");
+		atlas = new TextureAtlas("ui/newButton.pack");
 		skin = new Skin(atlas);
 		table = new Table(skin);
 		table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -64,30 +64,30 @@ public class MainMenu implements Screen {
 
 		//creating buttons
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.getDrawable("buttonNormal9");
-		textButtonStyle.down = skin.getDrawable("buttonPressed9");
+		textButtonStyle.up = skin.getDrawable("UI-Interface-Game-Buttons");
+		textButtonStyle.down = skin.getDrawable("UI-Interface-Game-Buttons");
 		textButtonStyle.pressedOffsetX = 1;
 		textButtonStyle.pressedOffsetY = -1;
 		textButtonStyle.font = white;
-		textButtonStyle.fontColor = Color.BLACK;
+		textButtonStyle.fontColor = Color.WHITE;
 
-		exitButton = new TextButton("EXIT", textButtonStyle );
+		exitButton = new TextButton("Options", textButtonStyle );
 		exitButton.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Gdx.app.exit();
 			}
 		});
-		exitButton.pad(10);
+		exitButton.pad(15);
 
-		startButton = new TextButton("START", textButtonStyle);
+		startButton = new TextButton("Start", textButtonStyle);
 		startButton.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				((Game) Gdx.app.getApplicationListener()).setScreen(new TestScreen());
 			}
 		});
-		startButton.pad(10);
+		startButton.pad(15);
 
 		//Creating heading
 		heading = new Label(JumpEm.TITLE, new LabelStyle(white, Color.WHITE));
