@@ -17,12 +17,6 @@ public class JumpEmCollision implements ContactListener{
 	
 	@Override
 	public void beginContact(Contact contact) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void endContact(Contact contact) {
 		Fixture A = contact.getFixtureA();
 		Fixture B = contact.getFixtureB();
 		
@@ -31,6 +25,11 @@ public class JumpEmCollision implements ContactListener{
 		
 		if(B.getUserData() == "Jumper" && A.getUserData() == "Trampoline")
 			A.getBody().setUserData("");
+	}
+
+	@Override
+	public void endContact(Contact contact) {
+		
 		
 	}
 
