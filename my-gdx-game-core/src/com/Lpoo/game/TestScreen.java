@@ -11,6 +11,9 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+/*
+ * TODO Criar atraso no desenho de trampolim
+ */
 public class TestScreen implements Screen {
 
 	private World world;
@@ -46,8 +49,18 @@ public class TestScreen implements Screen {
 			Vector3 coordf = new Vector3(xf, yf, 0);
 			camera.unproject(coord0);
 			camera.unproject(coordf);
-			test = new Trampoline(world, new Vector2(coord0.x, coord0.y),
-					new Vector2(coordf.x, coordf.y));
+			
+			float length = (float) Math.sqrt((coordf.x - coord0.x) * (coordf.x - coord0.x)
+					+ (coordf.y - coord0.y) * (coordf.y - coord0.y))/2;
+			if(length>5)
+				length=5;
+			float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x - coord0.x);
+			if(angle>Math.toRadians(30))
+				angle=(float) Math.toRadians(30);
+			if(angle<-Math.toRadians(30))
+				angle=(float) -Math.toRadians(30);
+			Vector2 center = new Vector2((float) ((coordf.x + coord0.x)*0.5),(float) ((coordf.y + coord0.y)*0.5));
+			test = new Trampoline(world,center, length, angle);
 			inputProcessor.setTouched(false);
 		}
 
@@ -78,7 +91,7 @@ public class TestScreen implements Screen {
 
 	@Override
 	public void show() {
-		world = new World(new Vector2(0, -15f), true);
+		world = new World(new Vector2(0, -9f), true);
 
 		inputProcessor = new JumpEmInputProcessor(world);
 		collisionProcessor = new JumpEmCollision(world);
@@ -89,7 +102,12 @@ public class TestScreen implements Screen {
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() / 10,
 				Gdx.graphics.getHeight() / 10);
 
-		jumper = new Jumper(world, 0, 0, 3);
+//		jumper = new Jumper(world, 0, 0, 2);
+		jumper = new Jumper(world, -3, 7, 1);
+		jumper = new Jumper(world, 0, 5, 1);
+		jumper = new Jumper(world, 0, 5, 1);
+		jumper = new Jumper(world, 5, -2, 1);
+		jumper = new Jumper(world, 2, 9, 1);
 		jumper2 = new Jumper(world, -2, 4, 1);
 		floor = new Floor(world, 0, -20);
 		top = new Floor(world, 0, 20);
