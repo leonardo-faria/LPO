@@ -28,10 +28,7 @@ public class TestScreen implements Screen {
 	private OrthographicCamera camera;
 	private JumpEmInputProcessor inputProcessor;
 	private JumpEmCollision collisionProcessor;
-	private Jumper jumper;
-	private Jumper jumper2;
 	private Wall floor;
-	private Floor tr;
 	private Array<Jumper> jumpers;
 
 	private Wall top;
@@ -61,10 +58,21 @@ public class TestScreen implements Screen {
 			float length = (float) Math.sqrt((coordf.x - coord0.x)
 					* (coordf.x - coord0.x) + (coordf.y - coord0.y)
 					* (coordf.y - coord0.y)) / 2;
-			if (length > 5)
-				length = 5;
+			if (length > 15)
+				length = 15;
+			if (length < 3)
+				length = 3;
 			float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x
 					- coord0.x);
+			if (angle > Math.PI/2.0)
+			{
+				angle=(float) -(Math.PI - angle);
+			}
+			else if (angle < -Math.PI/2.0)
+			{
+				angle=(float) (Math.PI + angle);
+			}
+			System.out.println(Math.toDegrees(angle));
 			if (angle > Math.toRadians(30))
 				angle = (float) Math.toRadians(30);
 			if (angle < -Math.toRadians(30))
@@ -81,7 +89,7 @@ public class TestScreen implements Screen {
 		for (int i = 0; i < bodies.size; i++) {
 			if (bodies.get(i).getUserData() instanceof String) {
 				world.destroyBody(bodies.get(i));
-				jumpers.add(new Jumper(world, 0, 0, 1));
+//				jumpers.add(new Jumper(world, 0, 0, 1));
 
 			}
 
@@ -96,10 +104,6 @@ public class TestScreen implements Screen {
 		camera.viewportWidth = width / 10;
 		camera.viewportHeight = height / 10;
 
-	}
-
-	public Jumper getJumper() {
-		return jumper;
 	}
 
 	@Override

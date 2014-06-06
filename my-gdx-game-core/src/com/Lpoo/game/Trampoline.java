@@ -25,7 +25,7 @@ public class Trampoline {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1f;
-		fixtureDef.restitution = 2f;
+		fixtureDef.restitution = 1.2f;
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData("Trampoline");
