@@ -1,5 +1,10 @@
 package com.Lpoo.screens;
 
+import com.Lpoo.game.JumpEmCollision;
+import com.Lpoo.game.JumpEmInputProcessor;
+import com.Lpoo.game.Jumper;
+import com.Lpoo.game.Trampoline;
+import com.Lpoo.game.Wall;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
