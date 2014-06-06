@@ -1,9 +1,11 @@
-package com.Lpoo.game;
+package com.Lpoo.screens;
 
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 
+import com.Lpoo.game.ActorAccessor;
+import com.Lpoo.game.JumpEm;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -55,7 +57,7 @@ public class MainMenu implements Screen {
 
 		Gdx.input.setInputProcessor(stage);
 
-		atlas = new TextureAtlas("ui/newButton.pack");
+		atlas = new TextureAtlas("ui/Normal.pack");
 		skin = new Skin(atlas);
 		table = new Table(skin);
 		table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -64,8 +66,8 @@ public class MainMenu implements Screen {
 
 		//creating buttons
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.getDrawable("UI-Interface-Game-Buttons");
-		textButtonStyle.down = skin.getDrawable("UI-Interface-Game-Buttons");
+		textButtonStyle.up = skin.getDrawable("wood");
+		textButtonStyle.down = skin.getDrawable("wood");
 		textButtonStyle.pressedOffsetX = 1;
 		textButtonStyle.pressedOffsetY = -1;
 		textButtonStyle.font = white;
@@ -75,7 +77,7 @@ public class MainMenu implements Screen {
 		exitButton.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.exit();
+				((Game) Gdx.app.getApplicationListener()).setScreen(new OptionScreen());
 			}
 		});
 		exitButton.pad(15);

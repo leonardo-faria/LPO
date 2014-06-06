@@ -1,11 +1,15 @@
 package com.Lpoo.game;
 
+import com.Lpoo.screens.LogoSplash;
+import com.Lpoo.screens.OptionScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 
 public class JumpEm extends Game {
  
 	public static final String TITLE =  "Jump'Em", VERSION = "ALPHA 0.1";
+	public static int difficulty;
+	
 	
 	@Override
 	public void dispose() {
@@ -44,7 +48,8 @@ public class JumpEm extends Game {
 
 	@Override
 	public void create() {
-		setScreen(new LogoSplash());
+		difficulty = 1;
+		setScreen(new OptionScreen());
 
 	}
 
