@@ -21,10 +21,15 @@ public class JumpEmCollision implements ContactListener{
 		Fixture B = contact.getFixtureB();
 		
 		if(A.getUserData() == "Jumper" && B.getUserData() == "Trampoline")
-			B.getBody().setUserData("");
+			B.getBody().setUserData("destroy");
 		
 		if(B.getUserData() == "Jumper" && A.getUserData() == "Trampoline")
-			A.getBody().setUserData("");
+			A.getBody().setUserData("destroy");
+
+		if(B.getUserData() == "Jumper" && A.getUserData() == "Floor")
+			A.getBody().setUserData("loose");
+		if(A.getUserData() == "Jumper" && B.getUserData() == "Floor")
+			B.getBody().setUserData("loose");
 	}
 
 	@Override

@@ -1,14 +1,18 @@
 package com.Lpoo.screens;
 
+import com.Lpoo.game.Floor;
+import com.Lpoo.game.JumpEm;
 import com.Lpoo.game.JumpEmCollision;
 import com.Lpoo.game.JumpEmInputProcessor;
 import com.Lpoo.game.Jumper;
 import com.Lpoo.game.Trampoline;
 import com.Lpoo.game.Wall;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -22,13 +26,12 @@ import com.badlogic.gdx.utils.Array;
  */
 public class TestScreen implements Screen {
 
-	private int difficulty;
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
 	private JumpEmInputProcessor inputProcessor;
 	private JumpEmCollision collisionProcessor;
-	private Wall floor;
+	private Floor floor;
 	private Array<Jumper> jumpers;
 
 	private Wall top;
@@ -39,7 +42,6 @@ public class TestScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -64,15 +66,11 @@ public class TestScreen implements Screen {
 				length = 3;
 			float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x
 					- coord0.x);
-			if (angle > Math.PI/2.0)
-			{
-				angle=(float) -(Math.PI - angle);
+			if (angle > Math.PI / 2.0) {
+				angle = (float) -(Math.PI - angle);
+			} else if (angle < -Math.PI / 2.0) {
+				angle = (float) (Math.PI + angle);
 			}
-			else if (angle < -Math.PI/2.0)
-			{
-				angle=(float) (Math.PI + angle);
-			}
-			System.out.println(Math.toDegrees(angle));
 			if (angle > Math.toRadians(30))
 				angle = (float) Math.toRadians(30);
 			if (angle < -Math.toRadians(30))
@@ -87,10 +85,15 @@ public class TestScreen implements Screen {
 		world.getBodies(bodies);
 
 		for (int i = 0; i < bodies.size; i++) {
-			if (bodies.get(i).getUserData() instanceof String) {
+			if (bodies.get(i).getUserData()=="destroy") {
 				world.destroyBody(bodies.get(i));
-//				jumpers.add(new Jumper(world, 0, 0, 1));
-
+				int r = MathUtils.random(100);
+				if (JumpEm.difficulty * 15 > r)
+					jumpers.add(new Jumper(world, 0, 0, 1));
+			}
+			else if(bodies.get(i).getUserData()=="loose")
+			{
+				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
 			}
 
 		}
@@ -123,10 +126,10 @@ public class TestScreen implements Screen {
 		float height = Gdx.graphics.getHeight();
 		Vector3 size = new Vector3(width, height, 0);
 		camera.unproject(size);
-		left = new Wall(world, -size.x, 0, Math.abs(size.y), 1, 0);
-		right = new Wall(world, size.x, 0, Math.abs(size.y), 1, 0);
-		floor = new Wall(world, 0, size.y, 1, size.x, 0);
-		top = new Wall(world, 0, -size.y, 1, size.x, 0);
+		left = new Wall(world, -size.x, 0, Math.abs(size.y)*3, 1, 0);
+		right = new Wall(world, size.x, 0, Math.abs(size.y)*3, 1, 0);
+		floor = new Floor(world, 0, (float) (size.y-0.5), 1, size.x, 0);
+//		top = new Wall(world, 0, -size.y, 1, size.x, 0);
 		jumpers = new Array<Jumper>();
 		jumpers.add(new Jumper(world, 0, 0, 1));
 
@@ -135,7 +138,7 @@ public class TestScreen implements Screen {
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -153,7 +156,8 @@ public class TestScreen implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-
+		world.dispose();
+		debugRenderer.dispose();
 	}
 
 }
