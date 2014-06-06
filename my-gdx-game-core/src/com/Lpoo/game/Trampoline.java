@@ -21,11 +21,11 @@ public class Trampoline {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(length , (float) 0.5, center ,angle);
+		shape.setAsBox(length , (float) 0.2, center ,angle);
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1f;
-		fixtureDef.restitution = 2f;
+		fixtureDef.restitution = 1.2f;
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData("Trampoline");
