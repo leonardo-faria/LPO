@@ -1,0 +1,40 @@
+
+Normal.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+wood
+  rotate: false
+  xy: 0, 12
+  size: 75, 33
+  orig: 75, 33
+  offset: 0, 0
+  index: -1
+greenDown
+  rotate: false
+  xy: 75, 0
+  size: 45, 45
+  orig: 45, 45
+  offset: 0, 0
+  index: -1
+greenUp
+  rotate: false
+  xy: 120, 0
+  size: 45, 45
+  orig: 45, 45
+  offset: 0, 0
+  index: -1
+radioUp
+  rotate: false
+  xy: 165, 10
+  size: 36, 35
+  orig: 36, 35
+  offset: 0, 0
+  index: -1
+radioDown
+  rotate: false
+  xy: 201, 10
+  size: 33, 35
+  orig: 33, 35
+  offset: 0, 0
+  index: -1

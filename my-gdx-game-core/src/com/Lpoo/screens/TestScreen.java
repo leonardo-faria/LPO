@@ -38,7 +38,7 @@ public class TestScreen implements Screen {
 	private Wall left, right;
 	private Trampoline test;
 	private final float TIMESTEP = 1 / 60f;
-	private final int VelocityIterations = 2, PositionIterations = 2;
+	private final int VelocityIterations = 8, PositionIterations = 3;
 
 	@Override
 	public void render(float delta) {
@@ -126,10 +126,10 @@ public class TestScreen implements Screen {
 		float height = Gdx.graphics.getHeight();
 		Vector3 size = new Vector3(width, height, 0);
 		camera.unproject(size);
-		left = new Wall(world, -size.x, 0, Math.abs(size.y)*3, 1, 0);
-		right = new Wall(world, size.x, 0, Math.abs(size.y)*3, 1, 0);
-		floor = new Floor(world, 0, (float) (size.y-0.5), 1, size.x, 0);
-//		top = new Wall(world, 0, -size.y, 1, size.x, 0);
+		left = new Wall(world, -size.x, 0, Math.abs(size.y)*40, 1, 0);
+		right = new Wall(world, size.x, 0, Math.abs(size.y)*10, 1, 0);
+		floor = new Floor(world, 0, (float) (size.y-1), 1, size.x, 0);
+		top = new Wall(world, 0, -size.y*3, 1, size.x, 0);
 		jumpers = new Array<Jumper>();
 		jumpers.add(new Jumper(world, 0, 0, 1));
 
