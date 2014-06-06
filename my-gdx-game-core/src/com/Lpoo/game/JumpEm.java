@@ -1,14 +1,13 @@
 package com.Lpoo.game;
 
-import com.Lpoo.screens.LogoSplash;
-import com.Lpoo.screens.OptionScreen;
+import com.Lpoo.screens.MainMenu;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 
 public class JumpEm extends Game {
  
 	public static final String TITLE =  "Jump'Em", VERSION = "ALPHA 0.1";
-	public static int difficulty;
+	public static int difficulty, points, time;
 	
 	
 	@Override
@@ -49,7 +48,9 @@ public class JumpEm extends Game {
 	@Override
 	public void create() {
 		difficulty = 1;
-		setScreen(new OptionScreen());
+		time = 0;
+		points = 0;
+		setScreen(new MainMenu());
 
 	}
 

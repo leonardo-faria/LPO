@@ -91,9 +91,9 @@ public class TestScreen implements Screen {
 				if (JumpEm.difficulty * 15 > r)
 					jumpers.add(new Jumper(world, 0, 0, 1));
 			}
-			else if(bodies.get(i).getUserData()=="loose")
+			else if(bodies.get(i).getUserData()=="lose")
 			{
-				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+				((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
 			}
 
 		}

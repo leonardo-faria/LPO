@@ -17,22 +17,22 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class MainMenu implements Screen {
+public class LoseScreen implements Screen{
 
 	private Stage stage;
 	private TextureAtlas atlas;
 	private Skin skin;
 	private Table table;
-	private TextButton optionsButton, startButton;
+	private TextButton returnButton;
 	private BitmapFont white;
-	private Label heading;
+	private Label heading, timeGame ,points;
 	private TweenManager tweenManager;
 
 	@Override
@@ -42,18 +42,18 @@ public class MainMenu implements Screen {
 
 		tweenManager.update(delta);
 
-		
 		stage.act(delta);
 		stage.draw();
+
 	}
 
 	@Override
 	public void resize(int width, int height) {
-
 	}
 
 	@Override
 	public void show() {
+
 		stage = new Stage();
 
 		Gdx.input.setInputProcessor(stage);
@@ -74,35 +74,33 @@ public class MainMenu implements Screen {
 		textButtonStyle.font = white;
 		textButtonStyle.fontColor = Color.WHITE;
 
-		optionsButton = new TextButton("Options", textButtonStyle );
-		optionsButton.addListener(new ClickListener(){
+		returnButton = new TextButton("Accept", textButtonStyle );
+		returnButton.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				((Game) Gdx.app.getApplicationListener()).setScreen(new OptionScreen());
+				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
 			}
 		});
-		optionsButton.pad(15);
 
-		startButton = new TextButton("Start", textButtonStyle);
-		startButton.addListener(new ClickListener(){
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				((Game) Gdx.app.getApplicationListener()).setScreen(new TestScreen());
-			}
-		});
-		startButton.pad(15);
+		returnButton.pad(15);
 
-		//Creating heading
-		heading = new Label(JumpEm.TITLE, new LabelStyle(white, Color.WHITE));
+		heading = new Label("SCORE", new LabelStyle(white, Color.WHITE));
 		heading.setFontScale(2);
+
+		timeGame = new Label("Total Play Time: " + JumpEm.time, new LabelStyle(white, Color.WHITE));
+
+		points = new Label("Points Acumulated: " + JumpEm.points, new LabelStyle(white, Color.WHITE));
 
 		table.add(heading);
 		table.getCell(heading).spaceBottom(100);
 		table.row();
-		table.add(startButton);
-		table.getCell(startButton).spaceBottom(15);
+		table.add(timeGame);
+		table.getCell(timeGame).spaceBottom(30);
 		table.row();
-		table.add(optionsButton);
+		table.add(points);
+		table.getCell(points).spaceBottom(30);
+		table.row();
+		table.add(returnButton);
 		stage.addActor(table);
 
 		//animations
@@ -120,45 +118,36 @@ public class MainMenu implements Screen {
 		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1,1,1))
 		.end().repeat(Tween.INFINITY, 0).start(tweenManager);
 
-
-
 		//buttons fade in
 		Timeline.createSequence().beginSequence()
-		.push(Tween.set(startButton, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(optionsButton, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(timeGame, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(points, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(returnButton, ActorAccessor.ALPHA).target(0))
 		.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
-		.push(Tween.to(startButton, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(optionsButton, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(timeGame, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(points, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(returnButton, ActorAccessor.ALPHA, .25f).target(1))
 		.end().start(tweenManager);
 
 		//table fade in
 		Tween.from(table, ActorAccessor.ALPHA, .5f).target(0).start(tweenManager);
 		Tween.from(table, ActorAccessor.Y, .5f).target(Gdx.graphics.getHeight()/8).start(tweenManager);
-
 	}
 
 	@Override
 	public void hide() {
-
 	}
 
 	@Override
 	public void pause() {
-
 	}
 
 	@Override
 	public void resume() {
-
 	}
 
 	@Override
 	public void dispose() {
-		stage.dispose();
-		atlas.dispose();
-		skin.dispose();
-		white.dispose();
-
 	}
 
 }
