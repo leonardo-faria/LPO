@@ -14,22 +14,25 @@ public class Wall {
 	Fixture fixture;
 	float cx, cy, height, width;
 
-	public Wall(World world, float cx, float cy, float height, float width, float angle) {
+	public Wall(World world, float cx, float cy, float height, float width,
+			float angle) {
 
 		this.cx = cx;
 		this.cy = cy;
-		this.height=height;
-		this.width=width;
-		
+		this.height = height;
+		this.width = width;
+
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(width, height,new Vector2(cx,cy), angle);
+		shape.setAsBox(width, height, new Vector2(cx, cy), angle);
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1f;
+		fixtureDef.restitution = 1f;
+		fixtureDef.density = 6;
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
 	}
