@@ -27,9 +27,9 @@ public class JumpEmCollision implements ContactListener{
 			A.getBody().setUserData("destroy");
 
 		if(B.getUserData() == "Jumper" && A.getUserData() == "Floor")
-			A.getBody().setUserData("loose");
+			A.getBody().setUserData("lose");
 		if(A.getUserData() == "Jumper" && B.getUserData() == "Floor")
-			B.getBody().setUserData("loose");
+			B.getBody().setUserData("lose");
 	}
 
 	@Override
