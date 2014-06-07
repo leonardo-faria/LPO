@@ -9,6 +9,7 @@ import com.Lpoo.game.JumpEm;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -42,7 +43,6 @@ public class MainMenu implements Screen {
 
 		tweenManager.update(delta);
 
-		
 		stage.act(delta);
 		stage.draw();
 	}
@@ -65,7 +65,7 @@ public class MainMenu implements Screen {
 
 		white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
 
-		//creating buttons
+		// creating buttons
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
 		textButtonStyle.up = skin.getDrawable("wood");
 		textButtonStyle.down = skin.getDrawable("wood");
@@ -74,8 +74,8 @@ public class MainMenu implements Screen {
 		textButtonStyle.font = white;
 		textButtonStyle.fontColor = Color.WHITE;
 
-		optionsButton = new TextButton("Options", textButtonStyle );
-		optionsButton.addListener(new ClickListener(){
+		optionsButton = new TextButton("Options", textButtonStyle);
+		optionsButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				((Game) Gdx.app.getApplicationListener()).setScreen(new OptionScreen());
@@ -84,7 +84,7 @@ public class MainMenu implements Screen {
 		optionsButton.pad(15);
 
 		startButton = new TextButton("Start", textButtonStyle);
-		startButton.addListener(new ClickListener(){
+		startButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
@@ -92,7 +92,7 @@ public class MainMenu implements Screen {
 		});
 		startButton.pad(15);
 
-		//Creating heading
+		// Creating heading
 		heading = new Label(JumpEm.TITLE, new LabelStyle(white, Color.WHITE));
 		heading.setFontScale(2);
 
@@ -103,38 +103,38 @@ public class MainMenu implements Screen {
 		table.getCell(startButton).spaceBottom(15);
 		table.row();
 		table.add(optionsButton);
-		table.debug();
-		stage.addActor(table);
+		// table.debug();
 
-		//animations
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			table.setTransform(true);
+			table.setOrigin(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+			table.setScale((float) (Gdx.graphics.getWidth()/300.0));
+		}
+		stage.addActor(table);
+		// animations
 		tweenManager = new TweenManager();
 		Tween.registerAccessor(Actor.class, new ActorAccessor());
 
-		//pretty colours
-		Timeline.createSequence().beginSequence()
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0,0,1))
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0,1,0))
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1,0,0))
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1,1,0))
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0,1,1))
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1,0,1))
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1,1,1))
-		.end().repeat(Tween.INFINITY, 0).start(tweenManager);
+		// pretty colours
+		Timeline.createSequence().beginSequence().push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0, 0, 1))
+				.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0, 1, 0))
+				.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1, 0, 0))
+				.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1, 1, 0))
+				.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0, 1, 1))
+				.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1, 0, 1))
+				.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1, 1, 1)).end().repeat(Tween.INFINITY, 0)
+				.start(tweenManager);
 
+		// buttons fade in
+		Timeline.createSequence().beginSequence().push(Tween.set(startButton, ActorAccessor.ALPHA).target(0))
+				.push(Tween.set(optionsButton, ActorAccessor.ALPHA).target(0))
+				.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
+				.push(Tween.to(startButton, ActorAccessor.ALPHA, .25f).target(1))
+				.push(Tween.to(optionsButton, ActorAccessor.ALPHA, .25f).target(1)).end().start(tweenManager);
 
-
-		//buttons fade in
-		Timeline.createSequence().beginSequence()
-		.push(Tween.set(startButton, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(optionsButton, ActorAccessor.ALPHA).target(0))
-		.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
-		.push(Tween.to(startButton, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(optionsButton, ActorAccessor.ALPHA, .25f).target(1))
-		.end().start(tweenManager);
-
-		//table fade in
+		// table fade in
 		Tween.from(table, ActorAccessor.ALPHA, .5f).target(0).start(tweenManager);
-		Tween.from(table, ActorAccessor.Y, .5f).target(Gdx.graphics.getHeight()/8).start(tweenManager);
+		Tween.from(table, ActorAccessor.Y, .5f).target(Gdx.graphics.getHeight() / 8).start(tweenManager);
 
 	}
 

@@ -10,6 +10,7 @@ import com.Lpoo.game.JumpEm;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -56,8 +57,7 @@ public class LoseScreen implements Screen {
 
 	@Override
 	public void show() {
-		if (JumpEm.scoreArcade.points < JumpEm.lastScore)
-		{
+		if (JumpEm.scoreArcade.points < JumpEm.lastScore) {
 			JumpEm.scoreArcade.points = JumpEm.lastScore;
 			JumpEm.scoreArcade.time = JumpEm.lastTime;
 			Json json = new Json();
@@ -98,10 +98,14 @@ public class LoseScreen implements Screen {
 		heading = new Label("SCORE", new LabelStyle(white, Color.WHITE));
 		heading.setFontScale(2);
 
-		timeGame = new Label("Total Play Time: " + JumpEm.lastTime / 1000 + ":" + JumpEm.lastTime % 1000, new LabelStyle(white,
+		timeGame = new Label("Total Play Time:\n" + JumpEm.lastTime / 1000 + ":" + JumpEm.lastTime % 1000, new LabelStyle(white,
 				Color.WHITE));
+		timeGame.setAlignment(1);
+		timeGame.setFontScale(0.7f);
 
-		points = new Label("Points Acumulated: " + JumpEm.lastScore, new LabelStyle(white, Color.WHITE));
+		points = new Label("Points Acumulated:\n" + JumpEm.lastScore, new LabelStyle(white, Color.WHITE));
+		points.setAlignment(1);
+		points.setFontScale(0.7f);
 
 		table.add(heading);
 		table.getCell(heading).spaceBottom(100);
@@ -113,6 +117,12 @@ public class LoseScreen implements Screen {
 		table.getCell(points).spaceBottom(30);
 		table.row();
 		table.add(returnButton);
+
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			table.setTransform(true);
+			table.setOrigin(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+			table.setScale((float) (Gdx.graphics.getWidth() / 300.0));
+		}
 		stage.addActor(table);
 
 		// animations

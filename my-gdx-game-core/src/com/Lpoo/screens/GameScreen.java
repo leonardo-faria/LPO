@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
 	private final int VelocityIterations = 2, PositionIterations = 2;
 
 	private int mode;
-	private long jumperRadius;
+	private float jumperRadius;
 	private long startTime;
 	private int score;
 	float height;
@@ -138,14 +138,8 @@ public class GameScreen implements Screen {
 
 		Vector3 size = new Vector3(width, height, 0);
 		camera.unproject(size);
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			float temp;
-			temp = -size.x;
-			size.x=-size.y;
-			size.y=temp;
-			camera.rotate(90);
-		}
-		jumperRadius=(long) (size.x/25.0);
+		
+		jumperRadius=(float) (size.x/25.0);
 		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 3, 1, 0);
 		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0);
 		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
