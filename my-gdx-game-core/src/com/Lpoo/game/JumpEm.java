@@ -2,14 +2,17 @@ package com.Lpoo.game;
 
 import com.Lpoo.screens.MainMenu;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
 
 public class JumpEm extends Game {
- 
-	public static final String TITLE =  "Jump'Em", VERSION = "ALPHA 0.1";
-	public static int difficulty, bestScore, lastScore, BestTime, lastTime;
-	
-	
+
+	public static final String TITLE = "Jump'Em", VERSION = "ALPHA 0.1";
+	public static int difficulty, lastScore, lastTime;
+	public static Score scoreArcade, scoreChallenge;
+
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -48,8 +51,13 @@ public class JumpEm extends Game {
 	@Override
 	public void create() {
 		difficulty = 1;
-		bestScore = 0;
-		BestTime = 0;
+		scoreArcade = new Score(0, 0);
+		FileHandle file = Gdx.files.internal("Arcade.jpm");
+		Json json = new Json();
+		if (file.exists()) {
+			System.out.println(file.readString());
+			scoreArcade = json.fromJson(Score.class, file.readString());
+		}
 		setScreen(new MainMenu());
 
 	}
@@ -58,4 +66,5 @@ public class JumpEm extends Game {
 	public void render() {
 		super.render();
 	}
+
 }
