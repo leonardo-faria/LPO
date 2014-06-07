@@ -19,12 +19,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 /*
- * TODO Mapa infinito
  * TODO Criar atraso no desenho de trampolim
  */
-public class TestScreen implements Screen {
+public class GameScreen implements Screen {
 
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
@@ -39,6 +39,11 @@ public class TestScreen implements Screen {
 	private Trampoline test;
 	private final float TIMESTEP = 1 / 60f;
 	private final int VelocityIterations = 2, PositionIterations = 2;
+
+	
+	private int mode;
+	private long startTime;
+	private int score;
 
 	@Override
 	public void render(float delta) {
@@ -57,15 +62,13 @@ public class TestScreen implements Screen {
 			camera.unproject(coord0);
 			camera.unproject(coordf);
 
-			float length = (float) Math.sqrt((coordf.x - coord0.x)
-					* (coordf.x - coord0.x) + (coordf.y - coord0.y)
+			float length = (float) Math.sqrt((coordf.x - coord0.x) * (coordf.x - coord0.x) + (coordf.y - coord0.y)
 					* (coordf.y - coord0.y)) / 2;
 			if (length > 15)
 				length = 15;
 			if (length < 3)
 				length = 3;
-			float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x
-					- coord0.x);
+			float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x - coord0.x);
 			if (angle > Math.PI / 2.0) {
 				angle = (float) -(Math.PI - angle);
 			} else if (angle < -Math.PI / 2.0) {
@@ -75,8 +78,7 @@ public class TestScreen implements Screen {
 				angle = (float) Math.toRadians(30);
 			if (angle < -Math.toRadians(30))
 				angle = (float) -Math.toRadians(30);
-			Vector2 center = new Vector2((float) ((coordf.x + coord0.x) * 0.5),
-					(float) ((coordf.y + coord0.y) * 0.5));
+			Vector2 center = new Vector2((float) ((coordf.x + coord0.x) * 0.5), (float) ((coordf.y + coord0.y) * 0.5));
 			test = new Trampoline(world, center, length, angle);
 			inputProcessor.setTouched(false);
 		}
@@ -85,14 +87,16 @@ public class TestScreen implements Screen {
 		world.getBodies(bodies);
 
 		for (int i = 0; i < bodies.size; i++) {
-			if (bodies.get(i).getUserData()=="destroy") {
+			if (bodies.get(i).getUserData() == "destroy") {
 				world.destroyBody(bodies.get(i));
 				int r = MathUtils.random(100);
-				if (JumpEm.difficulty * 15 > r)
-					jumpers.add(new Jumper(world, 0, 0, 1));
-			}
-			else if(bodies.get(i).getUserData()=="lose")
-			{
+				if (r>35) {
+					score++;
+					jumpers.add(new Jumper(world, MathUtils.random((float) -(floor.getWidth()*0.5),(float) (floor.getWidth()*0.5)), 0, 1));
+				}
+			} else if (bodies.get(i).getUserData() == "lose") {
+				JumpEm.lastTime = (int) TimeUtils.timeSinceMillis(startTime);
+				JumpEm.lastScore = score;
 				((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
 			}
 
@@ -111,6 +115,8 @@ public class TestScreen implements Screen {
 
 	@Override
 	public void show() {
+		startTime = TimeUtils.millis();
+		score = 0;
 		world = new World(new Vector2(0, -9f), true);
 
 		inputProcessor = new JumpEmInputProcessor(world);
@@ -121,25 +127,24 @@ public class TestScreen implements Screen {
 		Gdx.input.setInputProcessor(inputProcessor);
 
 		debugRenderer = new Box2DDebugRenderer();
-		camera = new OrthographicCamera(Gdx.graphics.getWidth() / 10,
-				Gdx.graphics.getHeight() / 10);
+		camera = new OrthographicCamera(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
 
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
 		Vector3 size = new Vector3(width, height, 0);
 		camera.unproject(size);
-		left = new Wall(world, -size.x, 0, Math.abs(size.y)*3, 1, 0);
-		right = new Wall(world, size.x, 0, Math.abs(size.y)*3, 1, 0);
-		floor = new Floor(world, 0, (float) (size.y-0.5), 1, size.x, 0);
-//		top = new Wall(world, 0, -size.y, 1, size.x, 0);
+		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 3, 1, 0);
+		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0);
+		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
+		top = new Wall(world, 0, -size.y * 2, 1, size.x, 0);
 		jumpers = new Array<Jumper>();
 		jumpers.add(new Jumper(world, 0, 0, 1));
-		
+
 	}
 
 	@Override
 	public void hide() {
-		
+
 	}
 
 	@Override
@@ -156,7 +161,6 @@ public class TestScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		world.dispose();
 		debugRenderer.dispose();
 	}
