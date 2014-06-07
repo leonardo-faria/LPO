@@ -12,7 +12,8 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Floor {
 	public Body body;
 	Fixture fixture;
-	float cx, cy, height, width;
+	float cx, cy, height;
+	private float width;
 
 	public Floor(World world, float cx, float cy, float height, float width,
 			float angle) {
@@ -20,7 +21,7 @@ public class Floor {
 		this.cx = cx;
 		this.cy = cy;
 		this.height = height;
-		this.width = width;
+		this.setWidth(width);
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
@@ -36,5 +37,13 @@ public class Floor {
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData("Floor");
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
 	}
 }

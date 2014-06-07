@@ -54,10 +54,8 @@ public class JumpEm extends Game {
 		scoreArcade = new Score(0, 0);
 		FileHandle file = Gdx.files.internal("Arcade.jpm");
 		Json json = new Json();
-		if (file.exists()) {
-			System.out.println(file.readString());
+		if (file.exists())
 			scoreArcade = json.fromJson(Score.class, file.readString());
-		}
 		setScreen(new MainMenu());
 
 	}

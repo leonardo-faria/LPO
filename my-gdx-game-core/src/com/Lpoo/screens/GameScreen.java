@@ -22,10 +22,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /*
- * TODO Mapa infinito
  * TODO Criar atraso no desenho de trampolim
  */
-public class TestScreen implements Screen {
+public class GameScreen implements Screen {
 
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
@@ -41,6 +40,8 @@ public class TestScreen implements Screen {
 	private final float TIMESTEP = 1 / 60f;
 	private final int VelocityIterations = 2, PositionIterations = 2;
 
+	
+	private int mode;
 	private long startTime;
 	private int score;
 
@@ -89,9 +90,10 @@ public class TestScreen implements Screen {
 			if (bodies.get(i).getUserData() == "destroy") {
 				world.destroyBody(bodies.get(i));
 				int r = MathUtils.random(100);
-				score++;
-				if (JumpEm.difficulty * 15 > r)
-					jumpers.add(new Jumper(world, 0, 0, 1));
+				if (r>35) {
+					score++;
+					jumpers.add(new Jumper(world, MathUtils.random((float) -(floor.getWidth()*0.5),(float) (floor.getWidth()*0.5)), 0, 1));
+				}
 			} else if (bodies.get(i).getUserData() == "lose") {
 				JumpEm.lastTime = (int) TimeUtils.timeSinceMillis(startTime);
 				JumpEm.lastScore = score;
@@ -159,7 +161,6 @@ public class TestScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		world.dispose();
 		debugRenderer.dispose();
 	}
