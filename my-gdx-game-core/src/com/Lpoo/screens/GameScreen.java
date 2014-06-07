@@ -7,6 +7,7 @@ import com.Lpoo.game.JumpEmInputProcessor;
 import com.Lpoo.game.Jumper;
 import com.Lpoo.game.Trampoline;
 import com.Lpoo.game.Wall;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -40,10 +41,12 @@ public class GameScreen implements Screen {
 	private final float TIMESTEP = 1 / 60f;
 	private final int VelocityIterations = 2, PositionIterations = 2;
 
-	
 	private int mode;
+	private long jumperRadius;
 	private long startTime;
 	private int score;
+	float height;
+	float width;
 
 	@Override
 	public void render(float delta) {
@@ -90,9 +93,10 @@ public class GameScreen implements Screen {
 			if (bodies.get(i).getUserData() == "destroy") {
 				world.destroyBody(bodies.get(i));
 				int r = MathUtils.random(100);
-				if (r>35) {
+				if (r > 35) {
 					score++;
-					jumpers.add(new Jumper(world, MathUtils.random((float) -(floor.getWidth()*0.5),(float) (floor.getWidth()*0.5)), 0, 1));
+					jumpers.add(new Jumper(world, MathUtils.random((float) -(floor.getWidth() * 0.5),
+							(float) (floor.getWidth() * 0.5)), 0, jumperRadius));
 				}
 			} else if (bodies.get(i).getUserData() == "lose") {
 				JumpEm.lastTime = (int) TimeUtils.timeSinceMillis(startTime);
@@ -115,6 +119,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
+
 		startTime = TimeUtils.millis();
 		score = 0;
 		world = new World(new Vector2(0, -9f), true);
@@ -127,18 +132,26 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(inputProcessor);
 
 		debugRenderer = new Box2DDebugRenderer();
+		height = Gdx.graphics.getHeight();
+		width = Gdx.graphics.getWidth();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
 
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
 		Vector3 size = new Vector3(width, height, 0);
 		camera.unproject(size);
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			float temp;
+			temp = -size.x;
+			size.x=-size.y;
+			size.y=temp;
+			camera.rotate(90);
+		}
+		jumperRadius=(long) (size.x/25.0);
 		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 3, 1, 0);
 		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0);
 		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
 		top = new Wall(world, 0, -size.y * 2, 1, size.x, 0);
 		jumpers = new Array<Jumper>();
-		jumpers.add(new Jumper(world, 0, 0, 1));
+		jumpers.add(new Jumper(world, 0, 0, jumperRadius));
 
 	}
 
