@@ -91,7 +91,7 @@ public class TestScreen implements Screen {
 				if (JumpEm.difficulty * 15 > r)
 					jumpers.add(new Jumper(world, 0, 0, 1));
 			}
-			else if(bodies.get(i).getUserData()=="loose")
+			else if(bodies.get(i).getUserData()=="lose")
 			{
 				((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
 			}
@@ -116,6 +116,8 @@ public class TestScreen implements Screen {
 		inputProcessor = new JumpEmInputProcessor(world);
 		collisionProcessor = new JumpEmCollision(world);
 		world.setContactListener(collisionProcessor);
+		world.setContactFilter(collisionProcessor);
+
 		Gdx.input.setInputProcessor(inputProcessor);
 
 		debugRenderer = new Box2DDebugRenderer();
@@ -132,12 +134,11 @@ public class TestScreen implements Screen {
 //		top = new Wall(world, 0, -size.y, 1, size.x, 0);
 		jumpers = new Array<Jumper>();
 		jumpers.add(new Jumper(world, 0, 0, 1));
-
+		
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 		
 	}
 
