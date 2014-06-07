@@ -7,7 +7,7 @@ import com.badlogic.gdx.Screen;
 public class JumpEm extends Game {
  
 	public static final String TITLE =  "Jump'Em", VERSION = "ALPHA 0.1";
-	public static int difficulty, points, time;
+	public static int difficulty, bestScore, lastScore, BestTime, lastTime;
 	
 	
 	@Override
@@ -48,8 +48,8 @@ public class JumpEm extends Game {
 	@Override
 	public void create() {
 		difficulty = 1;
-		time = 0;
-		points = 0;
+		bestScore = 0;
+		BestTime = 0;
 		setScreen(new MainMenu());
 
 	}

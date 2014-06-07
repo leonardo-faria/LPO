@@ -87,9 +87,9 @@ public class LoseScreen implements Screen{
 		heading = new Label("SCORE", new LabelStyle(white, Color.WHITE));
 		heading.setFontScale(2);
 
-		timeGame = new Label("Total Play Time: " + JumpEm.time, new LabelStyle(white, Color.WHITE));
+		timeGame = new Label("Total Play Time: " + JumpEm.lastTime, new LabelStyle(white, Color.WHITE));
 
-		points = new Label("Points Acumulated: " + JumpEm.points, new LabelStyle(white, Color.WHITE));
+		points = new Label("Points Acumulated: " + JumpEm.lastScore, new LabelStyle(white, Color.WHITE));
 
 		table.add(heading);
 		table.getCell(heading).spaceBottom(100);
