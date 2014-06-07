@@ -47,7 +47,7 @@ public class OptionScreen implements Screen{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		tweenManager.update(delta);
-		
+
 		
 		stage.act(delta);
 		stage.draw();
@@ -104,7 +104,19 @@ public class OptionScreen implements Screen{
 			}		
 		});
 
-		easyButton.setChecked(true);
+		switch(JumpEm.difficulty) {
+		case 1:
+			easyButton.setChecked(true);
+			break;
+		case 2:
+			mediumButton.setChecked(true);
+			break;
+		case 3:
+			hardButton.setChecked(true);
+			break;
+		default:
+			break;
+		}
 
 		buttonGroup = new ButtonGroup(easyButton,mediumButton,hardButton);
 		buttonGroup.setMaxCheckCount(1);
@@ -130,7 +142,7 @@ public class OptionScreen implements Screen{
 
 		//Creating heading
 		heading = new Label("Difficulty", new LabelStyle(white, Color.WHITE));
-		
+
 		easy = new Label("Easy", new LabelStyle(white, Color.WHITE));
 		easy.setFontScale(0.5f);
 
@@ -156,6 +168,7 @@ public class OptionScreen implements Screen{
 		table.row();
 		table.add(backButton);
 		table.getCell(backButton).spaceTop(70);
+		table.debug();
 		stage.addActor(table);
 
 		//animations

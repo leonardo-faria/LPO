@@ -1,7 +1,5 @@
 package com.Lpoo.screens;
 
-import java.sql.Time;
-
 import com.Lpoo.game.Floor;
 import com.Lpoo.game.JumpEm;
 import com.Lpoo.game.JumpEmCollision;
@@ -21,8 +19,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
 
 /*
  * TODO Mapa infinito
@@ -42,9 +38,7 @@ public class TestScreen implements Screen {
 	private Wall left, right;
 	private Trampoline test;
 	private final float TIMESTEP = 1 / 60f;
-	private final int VelocityIterations = 8, PositionIterations = 3;
-	private long startTime;
-	private int score;
+	private final int VelocityIterations = 2, PositionIterations = 2;
 
 	@Override
 	public void render(float delta) {
@@ -91,17 +85,15 @@ public class TestScreen implements Screen {
 		world.getBodies(bodies);
 
 		for (int i = 0; i < bodies.size; i++) {
-			if (bodies.get(i).getUserData() == "destroy") {
+			if (bodies.get(i).getUserData()=="destroy") {
 				world.destroyBody(bodies.get(i));
 				int r = MathUtils.random(100);
-				score++;
 				if (JumpEm.difficulty * 15 > r)
 					jumpers.add(new Jumper(world, 0, 0, 1));
-			} else if (bodies.get(i).getUserData() == "lose") {
-				JumpEm.lastTime = (int) TimeUtils.timeSinceMillis(startTime);
-				JumpEm.lastScore = score;
-				((Game) Gdx.app.getApplicationListener())
-						.setScreen(new LoseScreen());
+			}
+			else if(bodies.get(i).getUserData()=="loose")
+			{
+				((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
 			}
 
 		}
@@ -119,8 +111,6 @@ public class TestScreen implements Screen {
 
 	@Override
 	public void show() {
-		startTime = TimeUtils.millis();
-		score = 0;
 		world = new World(new Vector2(0, -9f), true);
 
 		inputProcessor = new JumpEmInputProcessor(world);
@@ -136,10 +126,10 @@ public class TestScreen implements Screen {
 		float height = Gdx.graphics.getHeight();
 		Vector3 size = new Vector3(width, height, 0);
 		camera.unproject(size);
-		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 40, 1, 0);
-		right = new Wall(world, size.x, 0, Math.abs(size.y) * 10, 1, 0);
-		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
-		top = new Wall(world, 0, -size.y * 3, 1, size.x, 0);
+		left = new Wall(world, -size.x, 0, Math.abs(size.y)*3, 1, 0);
+		right = new Wall(world, size.x, 0, Math.abs(size.y)*3, 1, 0);
+		floor = new Floor(world, 0, (float) (size.y-0.5), 1, size.x, 0);
+//		top = new Wall(world, 0, -size.y, 1, size.x, 0);
 		jumpers = new Array<Jumper>();
 		jumpers.add(new Jumper(world, 0, 0, 1));
 
@@ -148,7 +138,7 @@ public class TestScreen implements Screen {
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override

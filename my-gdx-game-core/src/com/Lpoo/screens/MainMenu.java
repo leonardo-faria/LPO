@@ -103,6 +103,7 @@ public class MainMenu implements Screen {
 		table.getCell(startButton).spaceBottom(15);
 		table.row();
 		table.add(optionsButton);
+		table.debug();
 		stage.addActor(table);
 
 		//animations
