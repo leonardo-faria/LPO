@@ -34,9 +34,7 @@ public class OptionScreen implements Screen{
 	private ButtonGroup buttonGroup;
 	private Stage stage;
 	private TextureAtlas atlas;
-	private Skin skin;
 	private Table table;
-	private BitmapFont white;
 	private Label heading, easy,medium, hard;
 	private TweenManager tweenManager;
 
@@ -67,12 +65,11 @@ public class OptionScreen implements Screen{
 
 		Gdx.input.setInputProcessor(stage);
 
-		atlas = new TextureAtlas("ui/Normal.pack");
-		skin = new Skin(atlas);
+		Skin skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/Normal.pack"));
+		
 		table = new Table(skin);
 		table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-		white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
 
 		//creating buttons
 		ButtonStyle buttonStyle = new ButtonStyle();
@@ -123,15 +120,8 @@ public class OptionScreen implements Screen{
 		buttonGroup.setMinCheckCount(1);
 		buttonGroup.setUncheckLast(true);
 
-		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.getDrawable("wood");
-		textButtonStyle.down = skin.getDrawable("wood");
-		textButtonStyle.pressedOffsetX = 1;
-		textButtonStyle.pressedOffsetY = -1;
-		textButtonStyle.font = white;
-		textButtonStyle.fontColor = Color.WHITE;
 
-		backButton = new TextButton("Back", textButtonStyle );
+		backButton = new TextButton("Back", skin, "default");
 		backButton.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -141,15 +131,15 @@ public class OptionScreen implements Screen{
 		backButton.pad(15);
 
 		//Creating heading
-		heading = new Label("Difficulty", new LabelStyle(white, Color.WHITE));
+		heading = new Label("Difficulty",  skin, "default");
 
-		easy = new Label("Easy", new LabelStyle(white, Color.WHITE));
+		easy = new Label("Easy",  skin, "default");
 		easy.setFontScale(0.5f);
 
-		medium = new Label("Medium", new LabelStyle(white, Color.WHITE));
+		medium = new Label("Medium", skin, "default");
 		medium.setFontScale(0.5f);
 
-		hard = new Label("Hard", new LabelStyle(white, Color.WHITE));
+		hard = new Label("Hard", skin, "default");
 		hard.setFontScale(0.5f);
 
 
@@ -236,8 +226,6 @@ public class OptionScreen implements Screen{
 	public void dispose() {
 		stage.dispose();
 		atlas.dispose();
-		skin.dispose();
-		white.dispose();
 	}
 
 }
