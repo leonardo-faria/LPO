@@ -87,7 +87,7 @@ public class HighscoresScreen implements Screen {
 		returnButton.pad(15);
 
 		heading = new Label("HIGHSCORE", new LabelStyle(white, Color.WHITE));
-		heading.setFontScale(1.7f);
+		heading.setFontScale(1.4f);
 
 		points = new Label("Score:\n" + JumpEm.scoreArcade.points, new LabelStyle(white, Color.WHITE));
 		points.setAlignment(1);

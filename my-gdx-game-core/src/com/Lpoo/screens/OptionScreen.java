@@ -156,7 +156,7 @@ public class OptionScreen implements Screen {
 		resetButton.pad(15);
 
 		// Creating heading
-		heading = new Label("Difficulty", new LabelStyle(white, Color.WHITE));
+		heading = new Label("Settings", new LabelStyle(white, Color.WHITE));
 
 		easy = new Label("Easy   ", new LabelStyle(white, Color.WHITE));
 		easy.setFontScale(1f);
@@ -168,7 +168,7 @@ public class OptionScreen implements Screen {
 		hard.setFontScale(1f);
 
 		table.add(heading);
-		table.getCell(heading).spaceBottom(70);
+		table.getCell(heading).spaceBottom(50);
 		table.row();
 		Table difficultys = new Table(skin);
 		difficultys.add(easy);
@@ -182,7 +182,7 @@ public class OptionScreen implements Screen {
 		table.add(difficultys);
 		table.row();
 		table.add(resetButton);
-		table.getCell(resetButton).spaceTop(70);
+		table.getCell(resetButton).spaceTop(50);
 		table.debug();
 		table.row();
 		table.add(backButton);
