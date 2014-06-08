@@ -1,5 +1,8 @@
 package com.Lpoo.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -25,16 +28,22 @@ public class Wall {
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
-
+		bodyDef.position.set(cx, cy);
+		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(width, height, new Vector2(cx, cy), angle);
+		shape.setAsBox(width, height);
 
+		Texture img = new Texture(Gdx.files.internal("img/wood.png"));
+		Sprite sprt = new Sprite(img);
+		sprt.setSize(width*2,height*2);
+		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1f;
 		fixtureDef.restitution = 1f;
 		fixtureDef.density = 6;
 		body = world.createBody(bodyDef);
+		body.setUserData(sprt);
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData(user);
 	}
