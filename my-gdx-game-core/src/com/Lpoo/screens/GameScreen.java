@@ -24,6 +24,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -45,13 +46,16 @@ public class GameScreen implements Screen {
 	private Floor floor;
 	private Array<Jumper> jumpers;
 	private Stage stage;
-	private Table table, title, quit;
+	private Table pauseTable, titleTable, quitTable;
 
 	private Wall top;
 	private Wall left, right;
 	private Trampoline test;
 	private final float TIMESTEP = 1 / 60f;
 	private final int VelocityIterations = 2, PositionIterations = 2;
+	
+	private TextureAtlas atlas;
+	private Skin skin;
 
 public TextButton pauseButton, quitButton;
 
@@ -160,37 +164,46 @@ public TextButton pauseButton, quitButton;
 
 		stage = new Stage();
 
-		Skin skin = new Skin(Gdx.files.internal("ui/menuSkin.json"),
-				new TextureAtlas("ui/Normal.pack"));
+		atlas = new TextureAtlas("ui/Normal.pack");
+		skin = new Skin(atlas);
 
-		table = new Table(skin);
-		table.setFillParent(true);
+		pauseTable = new Table(skin);
+		pauseTable.setFillParent(true);
 		
-		quit = new Table(skin);
-		quit.setFillParent(true);
+		quitTable = new Table(skin);
+		quitTable.setFillParent(true);
 		
-		title = new Table(skin);
-		title.setFillParent(true);
-
-		pauseButton = new TextButton("Pause", skin, "small");
-		quitButton = new TextButton("Quit", skin, "small");
-
-		table.add(pauseButton);
-		table.top().left();
-		table.debug();
-
-		quit.add(quitButton);
-		quit.bottom().left();
-		stage.addActor(table);
-
+		titleTable = new Table(skin);
+		titleTable.setFillParent(true);
+		
 		BitmapFont white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
+		BitmapFont whiteSmall = new BitmapFont(Gdx.files.internal("font/white16.fnt"), false);
+		
+		TextButtonStyle textButtonStyle = new TextButtonStyle();
+		textButtonStyle.up = skin.getDrawable("wood");
+		textButtonStyle.down = skin.getDrawable("wood");
+		textButtonStyle.font = whiteSmall;
+		textButtonStyle.fontColor = Color.WHITE;
+		
+		pauseButton = new TextButton("Pause",textButtonStyle);
+		quitButton = new TextButton("Quit", textButtonStyle);
+
+		pauseTable.add(pauseButton);
+		pauseTable.top().left();
+		pauseTable.debug();
+
+		quitTable.add(quitButton);
+		quitTable.bottom().left();
+		stage.addActor(pauseTable);
+
+
 
 
 		headingPause = new Label("PAUSED", new LabelStyle(white, Color.WHITE));
-		headingPause.setFontScale(2);
+		headingPause.setFontScale(1.9f);
 
-		title.add(headingPause);
-		title.center();
+		titleTable.add(headingPause);
+		titleTable.center();
 		
 		startTime = TimeUtils.millis();
 		score = 0;
@@ -230,8 +243,8 @@ public TextButton pauseButton, quitButton;
 	@Override
 	public void pause() {
 		inputProcessor.setPause(true);
-		stage.addActor(title);
-		stage.addActor(quit);
+		stage.addActor(titleTable);
+		stage.addActor(quitTable);
 		// TODO Auto-generated method stub
 
 	}
@@ -239,7 +252,7 @@ public TextButton pauseButton, quitButton;
 	@Override
 	public void resume() {
 		stage.clear();
-		stage.addActor(table);
+		stage.addActor(pauseTable);
 		inputProcessor.setPause(false);
 		// TODO Auto-generated method stub
 
