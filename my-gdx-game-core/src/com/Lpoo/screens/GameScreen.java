@@ -21,9 +21,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-/*
- * TODO Criar atraso no desenho de trampolim
- */
+
 public class GameScreen implements Screen {
 
 	private World world;
@@ -46,6 +44,7 @@ public class GameScreen implements Screen {
 	private float jumperRadius;
 	private long startTime;
 	private int score;
+	private int trampolineNumber;
 	float height;
 	float width;
 
@@ -56,7 +55,8 @@ public class GameScreen implements Screen {
 
 		world.step(TIMESTEP, VelocityIterations, PositionIterations);
 
-		if (inputProcessor.getTouched()) {
+		if (inputProcessor.getTouched() && trampolineNumber<JumpEm.difficulty*3+1) {
+			trampolineNumber++;
 			float x0 = inputProcessor.getX0();
 			float y0 = inputProcessor.getY0();
 			float xf = inputProcessor.getXf();
@@ -92,10 +92,11 @@ public class GameScreen implements Screen {
 
 		for (int i = 0; i < bodies.size; i++) {
 			if (bodies.get(i).getUserData() == "destroy") {
+				trampolineNumber--;
 				world.destroyBody(bodies.get(i));
+				score+=JumpEm.difficulty;
 				int r = MathUtils.random(100);
-				if (r > 35) {
-					score++;
+				if (r > 35 && jumpers.size < JumpEm.difficulty*3) {
 					jumpers.add(new Jumper(world, MathUtils.random((float) -(floor.getWidth() * 0.5),
 							(float) (floor.getWidth() * 0.5)), 0, jumperRadius));
 				}
