@@ -31,6 +31,12 @@ public class JumpEmCollision implements ContactListener, ContactFilter{
 			A.getBody().setUserData("lose");
 		if(A.getUserData() == "Jumper" && B.getUserData() == "Floor")
 			B.getBody().setUserData("lose");
+		
+		if(A.getBody().getUserData() == "Top")
+			B.getBody().setLinearVelocity(B.getBody().getLinearVelocity().x,0);
+		
+		if(B.getBody().getUserData() == "Top")
+			A.getBody().setLinearVelocity(A.getBody().getLinearVelocity().x,0);
 	}
 
 	@Override

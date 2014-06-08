@@ -51,8 +51,8 @@ public class GameScreen implements Screen {
 	private Wall top;
 	private Wall left, right;
 	private Trampoline test;
-	private final float TIMESTEP = 1 / 60f;
-	private final int VelocityIterations = 2, PositionIterations = 2;
+	private float TIMESTEP = 1 / 60f;
+	private final int VelocityIterations = 8, PositionIterations = 3;
 	
 	private TextureAtlas atlas;
 	private Skin skin;
@@ -68,14 +68,12 @@ public TextButton pauseButton, quitButton;
 
 	@Override
 	public void render(float delta) {
-		if (!inputProcessor.getPause()){
+		
+		world.step(TIMESTEP, VelocityIterations, PositionIterations);
+		
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
-			world.step(TIMESTEP, VelocityIterations, PositionIterations);
-
-
+			
 
 			if (inputProcessor.getTouched()
 					&& trampolineNumber < JumpEm.difficulty * 3 + 1) {
@@ -140,7 +138,6 @@ public TextButton pauseButton, quitButton;
 
 			debugRenderer.render(world, camera.combined);
 			camera.update();
-		}
 		
 		if(inputProcessor.getQuit())
 		{
@@ -230,6 +227,7 @@ public TextButton pauseButton, quitButton;
 		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0);
 		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
 		top = new Wall(world, 0, -size.y * 2, 1, size.x, 0);
+		top.body.setUserData("Top");
 		jumpers = new Array<Jumper>();
 		jumpers.add(new Jumper(world, 0, 0, jumperRadius));
 
@@ -245,12 +243,14 @@ public TextButton pauseButton, quitButton;
 		inputProcessor.setPause(true);
 		stage.addActor(titleTable);
 		stage.addActor(quitTable);
+		TIMESTEP = 0;
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
+		TIMESTEP = 1 / 60f;
 		stage.clear();
 		stage.addActor(pauseTable);
 		inputProcessor.setPause(false);

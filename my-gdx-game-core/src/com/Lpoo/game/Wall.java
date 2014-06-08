@@ -36,4 +36,6 @@ public class Wall {
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
 	}
+	
+	
 }
