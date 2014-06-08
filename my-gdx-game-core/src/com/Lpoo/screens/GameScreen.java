@@ -21,9 +21,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-/*
- * TODO Criar atraso no desenho de trampolim
- */
+
 public class GameScreen implements Screen {
 
 	private World world;
@@ -34,16 +32,21 @@ public class GameScreen implements Screen {
 	private Floor floor;
 	private Array<Jumper> jumpers;
 
+	@SuppressWarnings("unused")
 	private Wall top;
+	@SuppressWarnings("unused")
 	private Wall left, right;
+	@SuppressWarnings("unused")
 	private Trampoline test;
 	private final float TIMESTEP = 1 / 60f;
 	private final int VelocityIterations = 2, PositionIterations = 2;
 
-	
-	private int mode;
+	private float jumperRadius;
 	private long startTime;
 	private int score;
+	private int trampolineNumber;
+	float height;
+	float width;
 
 	@Override
 	public void render(float delta) {
@@ -52,7 +55,8 @@ public class GameScreen implements Screen {
 
 		world.step(TIMESTEP, VelocityIterations, PositionIterations);
 
-		if (inputProcessor.getTouched()) {
+		if (inputProcessor.getTouched() && trampolineNumber<JumpEm.difficulty*3+1) {
+			trampolineNumber++;
 			float x0 = inputProcessor.getX0();
 			float y0 = inputProcessor.getY0();
 			float xf = inputProcessor.getXf();
@@ -88,11 +92,13 @@ public class GameScreen implements Screen {
 
 		for (int i = 0; i < bodies.size; i++) {
 			if (bodies.get(i).getUserData() == "destroy") {
+				trampolineNumber--;
 				world.destroyBody(bodies.get(i));
+				score+=JumpEm.difficulty;
 				int r = MathUtils.random(100);
-				if (r>35) {
-					score++;
-					jumpers.add(new Jumper(world, MathUtils.random((float) -(floor.getWidth()*0.5),(float) (floor.getWidth()*0.5)), 0, 1));
+				if (r > 35 && jumpers.size < JumpEm.difficulty*3) {
+					jumpers.add(new Jumper(world, MathUtils.random((float) -(floor.getWidth() * 0.5),
+							(float) (floor.getWidth() * 0.5)), 0, jumperRadius));
 				}
 			} else if (bodies.get(i).getUserData() == "lose") {
 				JumpEm.lastTime = (int) TimeUtils.timeSinceMillis(startTime);
@@ -105,7 +111,7 @@ public class GameScreen implements Screen {
 		debugRenderer.render(world, camera.combined);
 		camera.update();
 	}
-
+ 
 	@Override
 	public void resize(int width, int height) {
 		camera.viewportWidth = width / 10;
@@ -115,6 +121,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
+
 		startTime = TimeUtils.millis();
 		score = 0;
 		world = new World(new Vector2(0, -9f), true);
@@ -127,18 +134,20 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(inputProcessor);
 
 		debugRenderer = new Box2DDebugRenderer();
+		height = Gdx.graphics.getHeight();
+		width = Gdx.graphics.getWidth();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
 
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
 		Vector3 size = new Vector3(width, height, 0);
 		camera.unproject(size);
+		
+		jumperRadius=(float) (size.x/25.0);
 		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 3, 1, 0);
 		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0);
 		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
 		top = new Wall(world, 0, -size.y * 2, 1, size.x, 0);
 		jumpers = new Array<Jumper>();
-		jumpers.add(new Jumper(world, 0, 0, 1));
+		jumpers.add(new Jumper(world, 0, 0, jumperRadius));
 
 	}
 

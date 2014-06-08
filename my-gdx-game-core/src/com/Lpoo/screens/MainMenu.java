@@ -14,6 +14,8 @@ import com.Lpoo.game.JumpEm;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -30,6 +32,9 @@ public class MainMenu implements Screen {
 	private Stage stage;
 	private Skin skin;
 	private Table table;
+	private TextButton optionsButton, startButton, scoreButton;
+	private BitmapFont white;
+	private Label heading;
 	private TweenManager tweenManager;
 
 	@Override
@@ -96,15 +101,38 @@ public class MainMenu implements Screen {
 		});
 		buttonSettings.pad(15);
 
+		scoreButton = new TextButton("Score", textButtonStyle);
+		scoreButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				((Game) Gdx.app.getApplicationListener()).setScreen(new HighscoresScreen());
+			}
+		});
+		scoreButton.pad(15);
 
-		// putting stuff together
-		table.add(heading).spaceBottom(100).row();
-		table.add(buttonPlay).spaceBottom(15).row();
-		table.add(buttonSettings);
+		// Creating heading
+		heading = new Label(JumpEm.TITLE, new LabelStyle(white, Color.WHITE));
+		heading.setFontScale(2);
 
+		table.add(heading);
+		table.getCell(heading).spaceBottom(100);
+		table.row();
+		table.add(startButton);
+		table.getCell(startButton).spaceBottom(15);
+		table.row();
+		table.add(optionsButton);
+		table.getCell(optionsButton).spaceBottom(15);
+		table.row();
+		table.add(scoreButton);
+		// table.debug();
+
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			table.setTransform(true);
+			table.setOrigin(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+			table.setScale((float) (Gdx.graphics.getWidth() / 300.0));
+		}
 		stage.addActor(table);
-
-		// creating animations
+		// animations
 		tweenManager = new TweenManager();
 		Tween.registerAccessor(Actor.class, new ActorAccessor());
 
