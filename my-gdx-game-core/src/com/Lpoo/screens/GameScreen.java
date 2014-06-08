@@ -32,11 +32,8 @@ public class GameScreen implements Screen {
 	private Floor floor;
 	private Array<Jumper> jumpers;
 
-	@SuppressWarnings("unused")
 	private Wall top;
-	@SuppressWarnings("unused")
 	private Wall left, right;
-	@SuppressWarnings("unused")
 	private Trampoline test;
 	private final float TIMESTEP = 1 / 60f;
 	private final int VelocityIterations = 2, PositionIterations = 2;

@@ -133,7 +133,7 @@ public class OptionScreen implements Screen {
 			}
 		});
 		backButton.pad(15);
-		resetButton = new TextButton("Reset Scores", textButtonStyle);
+		resetButton = new TextButton("Reset Scores", skin);
 		resetButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

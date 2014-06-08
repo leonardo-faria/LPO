@@ -32,8 +32,6 @@ public class MainMenu implements Screen {
 	private Stage stage;
 	private Skin skin;
 	private Table table;
-	private TextButton optionsButton, startButton, scoreButton;
-	private BitmapFont white;
 	private Label heading;
 	private TweenManager tweenManager;
 
@@ -101,7 +99,7 @@ public class MainMenu implements Screen {
 		});
 		buttonSettings.pad(15);
 
-		scoreButton = new TextButton("Score", textButtonStyle);
+		TextButton scoreButton = new TextButton("Score", skin);
 		scoreButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -111,18 +109,14 @@ public class MainMenu implements Screen {
 		scoreButton.pad(15);
 
 		// Creating heading
-		heading = new Label(JumpEm.TITLE, new LabelStyle(white, Color.WHITE));
+		heading = new Label(JumpEm.TITLE, skin);
 		heading.setFontScale(2);
 
 		table.add(heading);
 		table.getCell(heading).spaceBottom(100);
 		table.row();
-		table.add(startButton);
-		table.getCell(startButton).spaceBottom(15);
-		table.row();
-		table.add(optionsButton);
-		table.getCell(optionsButton).spaceBottom(15);
-		table.row();
+		table.add(buttonPlay).spaceBottom(15).row();
+		table.add(buttonSettings).spaceBottom(15).row();
 		table.add(scoreButton);
 		// table.debug();
 
@@ -151,9 +145,11 @@ public class MainMenu implements Screen {
 		Timeline.createSequence().beginSequence()
 				.push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))
 				.push(Tween.set(buttonSettings, ActorAccessor.ALPHA).target(0))
+				.push(Tween.set(scoreButton, ActorAccessor.ALPHA).target(0))
 				.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
 				.push(Tween.to(buttonPlay, ActorAccessor.ALPHA, .25f).target(1))
 				.push(Tween.to(buttonSettings, ActorAccessor.ALPHA, .25f).target(1))
+				.push(Tween.to(scoreButton, ActorAccessor.ALPHA, .25f).target(1))
 				.end().start(tweenManager);
 
 		// table fade-in
