@@ -45,6 +45,8 @@ public class MainMenu implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
+		stage.getCamera().viewportWidth = width;
+		stage.getCamera().viewportHeight = height;
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class MainMenu implements Screen {
 
 					@Override
 					public void run() {
-						((Game) Gdx.app.getApplicationListener()).setScreen(new TestScreen());
+						((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
 					}
 				})));
 			}
