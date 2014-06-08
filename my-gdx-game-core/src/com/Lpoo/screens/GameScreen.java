@@ -116,7 +116,7 @@ public TextButton pauseButton, quitButton;
 			world.getBodies(bodies);
 
 			for (int i = 0; i < bodies.size; i++) {
-				if (bodies.get(i).getUserData() == "destroy") {
+				if (bodies.get(i).getFixtureList().first().getUserData() == "destroy") {
 					trampolineNumber--;
 					world.destroyBody(bodies.get(i));
 					score += JumpEm.difficulty;
@@ -127,7 +127,7 @@ public TextButton pauseButton, quitButton;
 								(float) (floor.getWidth() * 0.5)), 0,
 								jumperRadius));
 					}
-				} else if (bodies.get(i).getUserData() == "lose") {
+				} else if (bodies.get(i).getFixtureList().first().getUserData() == "lose") {
 					JumpEm.lastTime = (int) TimeUtils
 							.timeSinceMillis(startTime);
 					JumpEm.lastScore = score;
@@ -223,10 +223,10 @@ public TextButton pauseButton, quitButton;
 		camera.unproject(size);
 
 		jumperRadius = (float) (size.x / 25.0);
-		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 3, 1, 0);
-		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0);
+		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 3, 1, 0,"Wall");
+		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0,"Wall");
 		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
-		top = new Wall(world, 0, -size.y * 2, 1, size.x, 0);
+		top = new Wall(world, 0, -size.y * 2, 1, size.x, 0, "Top");
 		top.body.setUserData("Top");
 		jumpers = new Array<Jumper>();
 		jumpers.add(new Jumper(world, 0, 0, jumperRadius));

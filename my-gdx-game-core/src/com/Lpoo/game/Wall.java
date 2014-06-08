@@ -14,8 +14,9 @@ public class Wall {
 	Fixture fixture;
 	float cx, cy, height, width;
 
+	
 	public Wall(World world, float cx, float cy, float height, float width,
-			float angle) {
+			float angle,String user) {
 
 		this.cx = cx;
 		this.cy = cy;
@@ -35,6 +36,7 @@ public class Wall {
 		fixtureDef.density = 6;
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
+		fixture.setUserData(user);
 	}
 	
 	

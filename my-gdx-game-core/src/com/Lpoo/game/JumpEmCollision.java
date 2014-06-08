@@ -22,20 +22,20 @@ public class JumpEmCollision implements ContactListener, ContactFilter{
 		Fixture B = contact.getFixtureB();
 
 		if(A.getUserData() == "Jumper" && B.getUserData() == "Trampoline")
-			B.getBody().setUserData("destroy");
+			B.setUserData("destroy");
 
 		if(B.getUserData() == "Jumper" && A.getUserData() == "Trampoline")
-			A.getBody().setUserData("destroy");
+			A.setUserData("destroy");
 
 		if(B.getUserData() == "Jumper" && A.getUserData() == "Floor")
-			A.getBody().setUserData("lose");
+			A.setUserData("lose");
 		if(A.getUserData() == "Jumper" && B.getUserData() == "Floor")
-			B.getBody().setUserData("lose");
+			B.setUserData("lose");
 		
-		if(A.getBody().getUserData() == "Top")
+		if(A.getUserData() == "Top")
 			B.getBody().setLinearVelocity(B.getBody().getLinearVelocity().x,0);
 		
-		if(B.getBody().getUserData() == "Top")
+		if(B.getUserData() == "Top")
 			A.getBody().setLinearVelocity(A.getBody().getLinearVelocity().x,0);
 	}
 
