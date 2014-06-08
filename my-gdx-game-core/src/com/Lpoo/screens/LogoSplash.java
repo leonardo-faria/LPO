@@ -5,6 +5,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 
+import com.Lpoo.game.JumpEm;
 import com.Lpoo.game.SpriteAcessor;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -55,6 +56,16 @@ public class LogoSplash implements Screen{
 				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
 			}
 		}).start(tweenManager);
+		
+		Texture imgTramp = new Texture(Gdx.files.internal("img/wood.png"));
+		Texture imgBall = new Texture(Gdx.files.internal("img/redBall.png"));
+		Texture imgWall = new Texture(Gdx.files.internal("img/wood.png"));
+		Texture imgPaper = new Texture(Gdx.files.internal("img/forest.png"));
+		
+		JumpEm.imgBall = imgBall;
+		JumpEm.imgTramp = imgTramp;
+		JumpEm.imgWall = imgWall;
+		JumpEm.imgPaper = imgPaper;
 	}
 
 	@Override

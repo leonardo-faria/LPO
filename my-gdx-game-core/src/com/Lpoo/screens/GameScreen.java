@@ -80,42 +80,42 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-		if (inputProcessor.getTouched()
-				&& trampolineNumber < JumpEm.difficulty * 3 + 1) {
-			trampolineNumber++;
-			float x0 = inputProcessor.getX0();
-			float y0 = inputProcessor.getY0();
-			float xf = inputProcessor.getXf();
-			float yf = inputProcessor.getYf();
-			Vector3 coord0 = new Vector3(x0, y0, 0);
-			Vector3 coordf = new Vector3(xf, yf, 0);
-			camera.unproject(coord0);
-			camera.unproject(coordf);
-			float length = (float) Math.sqrt((coordf.x - coord0.x)
-					* (coordf.x - coord0.x) + (coordf.y - coord0.y)
-					* (coordf.y - coord0.y)) / 2;
-			if (length > 15)
-				length = 15;
-			if (length < 3)
-				length = 3;
-			float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x
-					- coord0.x);
-			if (angle > Math.PI / 2.0) {
-				angle = (float) -(Math.PI - angle);
-			} else if (angle < -Math.PI / 2.0) {
-				angle = (float) (Math.PI + angle);
+		if(!inputProcessor.getPause())
+			if (inputProcessor.getTouched()
+					&& trampolineNumber < JumpEm.difficulty * 3 + 1) {
+				trampolineNumber++;
+				float x0 = inputProcessor.getX0();
+				float y0 = inputProcessor.getY0();
+				float xf = inputProcessor.getXf();
+				float yf = inputProcessor.getYf();
+				Vector3 coord0 = new Vector3(x0, y0, 0);
+				Vector3 coordf = new Vector3(xf, yf, 0);
+				camera.unproject(coord0);
+				camera.unproject(coordf);
+				float length = (float) Math.sqrt((coordf.x - coord0.x)
+						* (coordf.x - coord0.x) + (coordf.y - coord0.y)
+						* (coordf.y - coord0.y)) / 2;
+				if (length > 15)
+					length = 15;
+				if (length < 3)
+					length = 3;
+				float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x
+						- coord0.x);
+				if (angle > Math.PI / 2.0) {
+					angle = (float) -(Math.PI - angle);
+				} else if (angle < -Math.PI / 2.0) {
+					angle = (float) (Math.PI + angle);
+				}
+				if (angle > Math.toRadians(30))
+					angle = (float) Math.toRadians(30);
+				if (angle < -Math.toRadians(30))
+					angle = (float) -Math.toRadians(30);
+				Vector2 center = new Vector2(
+						(float) ((coordf.x + coord0.x) * 0.5),
+						(float) ((coordf.y + coord0.y) * 0.5));
+				test = new Trampoline(world, center, length, angle, imgTramp);
+				inputProcessor.setTouched(false);
 			}
-			if (angle > Math.toRadians(30))
-				angle = (float) Math.toRadians(30);
-			if (angle < -Math.toRadians(30))
-				angle = (float) -Math.toRadians(30);
-			Vector2 center = new Vector2(
-					(float) ((coordf.x + coord0.x) * 0.5),
-					(float) ((coordf.y + coord0.y) * 0.5));
-			test = new Trampoline(world, center, length, angle, imgTramp);
-			inputProcessor.setTouched(false);
-		}
 
 		Array<Body> bodies = new Array<Body>();
 		world.getBodies(bodies);
@@ -123,7 +123,7 @@ public class GameScreen implements Screen {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		sprite.setSize(width/2, height/2);
+		sprite.setSize(width/10, height/10);
 		sprite.setCenter(0, 0);
 		sprite.draw(batch);
 		for (int i = 0; i < bodies.size; i++) {
@@ -187,10 +187,10 @@ public class GameScreen implements Screen {
 		atlas = new TextureAtlas("ui/Normal.pack");
 		skin = new Skin(atlas);
 
-		imgTramp = new Texture(Gdx.files.internal("img/wood.png"));
-		imgBall = new Texture(Gdx.files.internal("img/redBall.png"));
-		imgWall = new Texture(Gdx.files.internal("img/wood.png"));
-		imgPaper = new Texture(Gdx.files.internal("img/forest.png"));
+		imgBall = JumpEm.imgBall; 
+		imgTramp = JumpEm.imgTramp;
+		imgWall = JumpEm.imgWall; 
+		imgPaper = JumpEm.imgPaper; 
 		sprite = new Sprite(imgPaper);
 
 		pauseTable = new Table(skin);

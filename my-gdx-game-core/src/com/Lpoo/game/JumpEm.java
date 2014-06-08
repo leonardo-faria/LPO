@@ -1,10 +1,12 @@
 package com.Lpoo.game;
 
+import com.Lpoo.screens.LogoSplash;
 import com.Lpoo.screens.MainMenu;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Json;
 
 public class JumpEm extends Game {
@@ -12,6 +14,7 @@ public class JumpEm extends Game {
 	public static final String TITLE = "Jump'Em", VERSION = "ALPHA 0.1";
 	public static int difficulty, lastScore, lastTime;
 	public static Score scoreArcade, scoreChallenge;
+	public static Texture imgTramp,imgBall, imgWall, imgPaper;
 
 	@Override
 	public void dispose() {
@@ -56,7 +59,7 @@ public class JumpEm extends Game {
 		Json json = new Json();
 		if (file.exists())
 			scoreArcade = json.fromJson(Score.class, file.readString());
-		setScreen(new MainMenu());
+		setScreen(new LogoSplash());
 
 	}
 
