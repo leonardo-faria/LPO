@@ -27,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
 
-public class LoseScreen implements Screen {
+public class HighscoresScreen implements Screen {
 
 	private Stage stage;
 	private TextureAtlas atlas;
@@ -56,14 +56,6 @@ public class LoseScreen implements Screen {
 
 	@Override
 	public void show() {
-		if (JumpEm.scoreArcade.points < JumpEm.lastScore) {
-			JumpEm.scoreArcade.points = JumpEm.lastScore;
-			JumpEm.scoreArcade.time = JumpEm.lastTime;
-			Json json = new Json();
-			FileHandle file = Gdx.files.local("Arcade.jpm");
-			file.writeString(json.toJson(JumpEm.scoreArcade), false);
-		}
-
 		stage = new Stage();
 
 		Gdx.input.setInputProcessor(stage);
@@ -84,7 +76,7 @@ public class LoseScreen implements Screen {
 		textButtonStyle.font = white;
 		textButtonStyle.fontColor = Color.WHITE;
 
-		returnButton = new TextButton("Accept", textButtonStyle);
+		returnButton = new TextButton("Back", textButtonStyle);
 		returnButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -94,26 +86,26 @@ public class LoseScreen implements Screen {
 
 		returnButton.pad(15);
 
-		heading = new Label("SCORE", new LabelStyle(white, Color.WHITE));
-		heading.setFontScale(2);
+		heading = new Label("HIGHSCORE", new LabelStyle(white, Color.WHITE));
+		heading.setFontScale(1.7f);
 
-		timeGame = new Label("Total Play Time:\n" + JumpEm.lastTime / 1000 + ":" + JumpEm.lastTime % 1000, new LabelStyle(white,
-				Color.WHITE));
-		timeGame.setAlignment(1);
-		timeGame.setFontScale(0.7f);
-
-		points = new Label("Points Acumulated:\n" + JumpEm.lastScore, new LabelStyle(white, Color.WHITE));
+		points = new Label("Score:\n" + JumpEm.scoreArcade.points, new LabelStyle(white, Color.WHITE));
 		points.setAlignment(1);
-		points.setFontScale(0.7f);
+		points.setFontScale(1f);
+
+		timeGame = new Label("Time:\n" + JumpEm.scoreArcade.time / 1000 + ":" + JumpEm.scoreArcade.time % 1000, new LabelStyle(
+				white, Color.WHITE));
+		timeGame.setAlignment(1);
+		timeGame.setFontScale(1f);
 
 		table.add(heading);
 		table.getCell(heading).spaceBottom(100);
 		table.row();
+		table.add(points);
+		table.getCell(points).spaceBottom(15);
+		table.row();
 		table.add(timeGame);
 		table.getCell(timeGame).spaceBottom(30);
-		table.row();
-		table.add(points);
-		table.getCell(points).spaceBottom(30);
 		table.row();
 		table.add(returnButton);
 
@@ -139,12 +131,12 @@ public class LoseScreen implements Screen {
 				.start(tweenManager);
 
 		// buttons fade in
-		Timeline.createSequence().beginSequence().push(Tween.set(timeGame, ActorAccessor.ALPHA).target(0))
-				.push(Tween.set(points, ActorAccessor.ALPHA).target(0))
+		Timeline.createSequence().beginSequence().push(Tween.set(points, ActorAccessor.ALPHA).target(0))
+				.push(Tween.set(timeGame, ActorAccessor.ALPHA).target(0))
 				.push(Tween.set(returnButton, ActorAccessor.ALPHA).target(0))
 				.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
-				.push(Tween.to(timeGame, ActorAccessor.ALPHA, .25f).target(1))
 				.push(Tween.to(points, ActorAccessor.ALPHA, .25f).target(1))
+				.push(Tween.to(timeGame, ActorAccessor.ALPHA, .25f).target(1))
 				.push(Tween.to(returnButton, ActorAccessor.ALPHA, .25f).target(1)).end().start(tweenManager);
 
 		// table fade in

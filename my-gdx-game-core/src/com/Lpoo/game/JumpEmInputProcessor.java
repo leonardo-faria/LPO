@@ -1,11 +1,11 @@
 package com.Lpoo.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class JumpEmInputProcessor implements InputProcessor{
 
+	@SuppressWarnings("unused")
 	private World world;
 	private int x0, y0,xf,yf;
 	private boolean touched;

@@ -6,10 +6,13 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.Lpoo.game.ActorAccessor;
 import com.Lpoo.game.JumpEm;
+import com.Lpoo.game.Score;
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -27,11 +30,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Json;
 
 public class OptionScreen implements Screen {
 
 	private Button easyButton, mediumButton, hardButton;
-	private TextButton backButton;
+	private TextButton backButton,resetButton;
 	private ButtonGroup buttonGroup;
 	private Stage stage;
 	private TextureAtlas atlas;
@@ -139,6 +143,17 @@ public class OptionScreen implements Screen {
 			}
 		});
 		backButton.pad(15);
+		resetButton = new TextButton("Reset Scores", textButtonStyle);
+		resetButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				JumpEm.scoreArcade = new Score();
+				Json json = new Json();
+				FileHandle file = Gdx.files.local("Arcade.jpm");
+				file.writeString(json.toJson(JumpEm.scoreArcade), false);
+			}
+		});
+		resetButton.pad(15);
 
 		// Creating heading
 		heading = new Label("Difficulty", new LabelStyle(white, Color.WHITE));
@@ -153,7 +168,7 @@ public class OptionScreen implements Screen {
 		hard.setFontScale(1f);
 
 		table.add(heading);
-		table.getCell(heading).spaceBottom(100);
+		table.getCell(heading).spaceBottom(70);
 		table.row();
 		Table difficultys = new Table(skin);
 		difficultys.add(easy);
@@ -166,8 +181,12 @@ public class OptionScreen implements Screen {
 		difficultys.add(hardButton);
 		table.add(difficultys);
 		table.row();
+		table.add(resetButton);
+		table.getCell(resetButton).spaceTop(70);
+		table.debug();
+		table.row();
 		table.add(backButton);
-		table.getCell(backButton).spaceTop(70);
+		table.getCell(backButton).spaceTop(10);
 		table.debug();
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			table.setTransform(true);
@@ -196,6 +215,7 @@ public class OptionScreen implements Screen {
 				.push(Tween.set(medium, ActorAccessor.ALPHA).target(0))
 				.push(Tween.set(mediumButton, ActorAccessor.ALPHA).target(0))
 				.push(Tween.set(hard, ActorAccessor.ALPHA).target(0)).push(Tween.set(hardButton, ActorAccessor.ALPHA).target(0))
+				.push(Tween.set(resetButton, ActorAccessor.ALPHA).target(0))
 				.push(Tween.set(backButton, ActorAccessor.ALPHA).target(0))
 				.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
 				.push(Tween.to(easy, ActorAccessor.ALPHA, .25f).target(1))
@@ -204,6 +224,7 @@ public class OptionScreen implements Screen {
 				.push(Tween.to(mediumButton, ActorAccessor.ALPHA, .25f).target(1))
 				.push(Tween.to(hard, ActorAccessor.ALPHA, .25f).target(1))
 				.push(Tween.to(hardButton, ActorAccessor.ALPHA, .25f).target(1))
+				.push(Tween.to(resetButton, ActorAccessor.ALPHA, .25f).target(1))
 				.push(Tween.to(backButton, ActorAccessor.ALPHA, .25f).target(1)).end().start(tweenManager);
 
 		// table fade in

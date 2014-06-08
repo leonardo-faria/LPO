@@ -7,7 +7,6 @@ import com.Lpoo.game.JumpEmInputProcessor;
 import com.Lpoo.game.Jumper;
 import com.Lpoo.game.Trampoline;
 import com.Lpoo.game.Wall;
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -35,13 +34,15 @@ public class GameScreen implements Screen {
 	private Floor floor;
 	private Array<Jumper> jumpers;
 
+	@SuppressWarnings("unused")
 	private Wall top;
+	@SuppressWarnings("unused")
 	private Wall left, right;
+	@SuppressWarnings("unused")
 	private Trampoline test;
 	private final float TIMESTEP = 1 / 60f;
 	private final int VelocityIterations = 2, PositionIterations = 2;
 
-	private int mode;
 	private float jumperRadius;
 	private long startTime;
 	private int score;
@@ -109,7 +110,7 @@ public class GameScreen implements Screen {
 		debugRenderer.render(world, camera.combined);
 		camera.update();
 	}
-
+ 
 	@Override
 	public void resize(int width, int height) {
 		camera.viewportWidth = width / 10;
