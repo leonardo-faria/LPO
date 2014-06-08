@@ -10,33 +10,50 @@ import com.Lpoo.game.Wall;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+/*
+ * TODO: track ball position
+ */
 
 public class GameScreen implements Screen {
-
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
 	private JumpEmInputProcessor inputProcessor;
+
+	private Label headingPause;
 	private JumpEmCollision collisionProcessor;
 	private Floor floor;
 	private Array<Jumper> jumpers;
+	private Stage stage;
+	private Table table, title, quit;
 
 	private Wall top;
 	private Wall left, right;
 	private Trampoline test;
 	private final float TIMESTEP = 1 / 60f;
 	private final int VelocityIterations = 2, PositionIterations = 2;
+
+public TextButton pauseButton, quitButton;
 
 	private float jumperRadius;
 	private long startTime;
@@ -47,68 +64,90 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if (!inputProcessor.getPause()){
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		world.step(TIMESTEP, VelocityIterations, PositionIterations);
 
-		if (inputProcessor.getTouched() && trampolineNumber<JumpEm.difficulty*3+1) {
-			trampolineNumber++;
-			float x0 = inputProcessor.getX0();
-			float y0 = inputProcessor.getY0();
-			float xf = inputProcessor.getXf();
-			float yf = inputProcessor.getYf();
-			Vector3 coord0 = new Vector3(x0, y0, 0);
-			Vector3 coordf = new Vector3(xf, yf, 0);
-			camera.unproject(coord0);
-			camera.unproject(coordf);
+			world.step(TIMESTEP, VelocityIterations, PositionIterations);
 
-			float length = (float) Math.sqrt((coordf.x - coord0.x) * (coordf.x - coord0.x) + (coordf.y - coord0.y)
-					* (coordf.y - coord0.y)) / 2;
-			if (length > 15)
-				length = 15;
-			if (length < 3)
-				length = 3;
-			float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x - coord0.x);
-			if (angle > Math.PI / 2.0) {
-				angle = (float) -(Math.PI - angle);
-			} else if (angle < -Math.PI / 2.0) {
-				angle = (float) (Math.PI + angle);
-			}
-			if (angle > Math.toRadians(30))
-				angle = (float) Math.toRadians(30);
-			if (angle < -Math.toRadians(30))
-				angle = (float) -Math.toRadians(30);
-			Vector2 center = new Vector2((float) ((coordf.x + coord0.x) * 0.5), (float) ((coordf.y + coord0.y) * 0.5));
-			test = new Trampoline(world, center, length, angle);
-			inputProcessor.setTouched(false);
-		}
 
-		Array<Body> bodies = new Array<Body>();
-		world.getBodies(bodies);
 
-		for (int i = 0; i < bodies.size; i++) {
-			if (bodies.get(i).getUserData() == "destroy") {
-				trampolineNumber--;
-				world.destroyBody(bodies.get(i));
-				score+=JumpEm.difficulty;
-				int r = MathUtils.random(100);
-				if (r > 35 && jumpers.size < JumpEm.difficulty*3) {
-					jumpers.add(new Jumper(world, MathUtils.random((float) -(floor.getWidth() * 0.5),
-							(float) (floor.getWidth() * 0.5)), 0, jumperRadius));
+			if (inputProcessor.getTouched()
+					&& trampolineNumber < JumpEm.difficulty * 3 + 1) {
+				trampolineNumber++;
+				float x0 = inputProcessor.getX0();
+				float y0 = inputProcessor.getY0();
+				float xf = inputProcessor.getXf();
+				float yf = inputProcessor.getYf();
+				Vector3 coord0 = new Vector3(x0, y0, 0);
+				Vector3 coordf = new Vector3(xf, yf, 0);
+				camera.unproject(coord0);
+				camera.unproject(coordf);
+
+				float length = (float) Math.sqrt((coordf.x - coord0.x)
+						* (coordf.x - coord0.x) + (coordf.y - coord0.y)
+						* (coordf.y - coord0.y)) / 2;
+				if (length > 15)
+					length = 15;
+				if (length < 3)
+					length = 3;
+				float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x
+						- coord0.x);
+				if (angle > Math.PI / 2.0) {
+					angle = (float) -(Math.PI - angle);
+				} else if (angle < -Math.PI / 2.0) {
+					angle = (float) (Math.PI + angle);
 				}
-			} else if (bodies.get(i).getUserData() == "lose") {
-				JumpEm.lastTime = (int) TimeUtils.timeSinceMillis(startTime);
-				JumpEm.lastScore = score;
-				((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
+				if (angle > Math.toRadians(30))
+					angle = (float) Math.toRadians(30);
+				if (angle < -Math.toRadians(30))
+					angle = (float) -Math.toRadians(30);
+				Vector2 center = new Vector2(
+						(float) ((coordf.x + coord0.x) * 0.5),
+						(float) ((coordf.y + coord0.y) * 0.5));
+				test = new Trampoline(world, center, length, angle);
+				inputProcessor.setTouched(false);
 			}
 
+			Array<Body> bodies = new Array<Body>();
+			world.getBodies(bodies);
+
+			for (int i = 0; i < bodies.size; i++) {
+				if (bodies.get(i).getUserData() == "destroy") {
+					trampolineNumber--;
+					world.destroyBody(bodies.get(i));
+					score += JumpEm.difficulty;
+					int r = MathUtils.random(100);
+					if (r > 35 && jumpers.size < JumpEm.difficulty * 3) {
+						jumpers.add(new Jumper(world, MathUtils.random(
+								(float) -(floor.getWidth() * 0.5),
+								(float) (floor.getWidth() * 0.5)), 0,
+								jumperRadius));
+					}
+				} else if (bodies.get(i).getUserData() == "lose") {
+					JumpEm.lastTime = (int) TimeUtils
+							.timeSinceMillis(startTime);
+					JumpEm.lastScore = score;
+					((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
+				}
+
+			}
+
+			debugRenderer.render(world, camera.combined);
+			camera.update();
+		}
+		
+		if(inputProcessor.getQuit())
+		{
+			inputProcessor.setQuit(false);
+			((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
 		}
 
-		debugRenderer.render(world, camera.combined);
-		camera.update();
+		stage.act(delta);
+		stage.draw();
 	}
- 
+
 	@Override
 	public void resize(int width, int height) {
 		camera.viewportWidth = width / 10;
@@ -119,11 +158,45 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 
+		stage = new Stage();
+
+		Skin skin = new Skin(Gdx.files.internal("ui/menuSkin.json"),
+				new TextureAtlas("ui/Normal.pack"));
+
+		table = new Table(skin);
+		table.setFillParent(true);
+		
+		quit = new Table(skin);
+		quit.setFillParent(true);
+		
+		title = new Table(skin);
+		title.setFillParent(true);
+
+		pauseButton = new TextButton("Pause", skin, "small");
+		quitButton = new TextButton("Quit", skin, "small");
+
+		table.add(pauseButton);
+		table.top().left();
+		table.debug();
+
+		quit.add(quitButton);
+		quit.bottom().left();
+		stage.addActor(table);
+
+		BitmapFont white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
+
+
+		headingPause = new Label("PAUSED", new LabelStyle(white, Color.WHITE));
+		headingPause.setFontScale(2);
+
+		title.add(headingPause);
+		title.center();
+		
 		startTime = TimeUtils.millis();
 		score = 0;
 		world = new World(new Vector2(0, -9f), true);
 
-		inputProcessor = new JumpEmInputProcessor(world);
+		inputProcessor = new JumpEmInputProcessor(this);
 		collisionProcessor = new JumpEmCollision(world);
 		world.setContactListener(collisionProcessor);
 		world.setContactFilter(collisionProcessor);
@@ -133,12 +206,13 @@ public class GameScreen implements Screen {
 		debugRenderer = new Box2DDebugRenderer();
 		height = Gdx.graphics.getHeight();
 		width = Gdx.graphics.getWidth();
-		camera = new OrthographicCamera(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+		camera = new OrthographicCamera(Gdx.graphics.getWidth() / 10,
+				Gdx.graphics.getHeight() / 10);
 
 		Vector3 size = new Vector3(width, height, 0);
 		camera.unproject(size);
-		
-		jumperRadius=(float) (size.x/25.0);
+
+		jumperRadius = (float) (size.x / 25.0);
 		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 3, 1, 0);
 		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0);
 		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
@@ -155,12 +229,18 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
+		inputProcessor.setPause(true);
+		stage.addActor(title);
+		stage.addActor(quit);
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
+		stage.clear();
+		stage.addActor(table);
+		inputProcessor.setPause(false);
 		// TODO Auto-generated method stub
 
 	}
@@ -169,6 +249,10 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		world.dispose();
 		debugRenderer.dispose();
+	}
+
+	public float getHeight() {
+		return height;
 	}
 
 }
