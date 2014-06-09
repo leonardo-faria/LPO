@@ -38,7 +38,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
 	private World world;
-	private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
 	private JumpEmInputProcessor inputProcessor;
 
@@ -253,7 +252,6 @@ public class GameScreen implements Screen {
 
 		Gdx.input.setInputProcessor(inputProcessor);
 
-		debugRenderer = new Box2DDebugRenderer();
 		height = Gdx.graphics.getHeight();
 		width = Gdx.graphics.getWidth();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() / 10,
@@ -298,8 +296,14 @@ public class GameScreen implements Screen {
 	@Override
 	public void dispose() {
 		world.dispose();
-		debugRenderer.dispose();
 		batch.dispose();
+		stage.dispose();
+		imgTramp.dispose();
+		imgBall.dispose(); 
+		imgWall.dispose(); 
+		imgPaper.dispose();
+		atlas.dispose();
+		skin.dispose();
 	}
 
 	public float getHeight() {
