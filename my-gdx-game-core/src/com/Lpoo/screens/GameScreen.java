@@ -65,7 +65,8 @@ public class GameScreen implements Screen {
 	public TextButton pauseButton, quitButton;
 
 	private float jumperRadius;
-	private long startTime;
+	private long startTime, pauseTime;
+	private int totalPause;
 	private int score;
 	private int trampolineNumber;
 	float height;
@@ -148,8 +149,7 @@ public class GameScreen implements Screen {
 							jumperRadius, imgBall));
 				}
 			} else if (bodies.get(i).getFixtureList().first().getUserData() == "lose") {
-				JumpEm.lastTime = (int) TimeUtils
-						.timeSinceMillis(startTime);
+				JumpEm.lastTime = ((int) TimeUtils.timeSinceMillis(startTime))- totalPause;
 				JumpEm.lastScore = score;
 				((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
 			}
@@ -231,6 +231,7 @@ public class GameScreen implements Screen {
 		titleTable.center();
 
 		startTime = TimeUtils.millis();
+		totalPause = 0;
 		score = 0;
 		world = new World(new Vector2(0, -9.8f), true);
 
@@ -267,6 +268,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void pause() {
 		inputProcessor.setPause(true);
+		pauseTime = TimeUtils.millis();
 		stage.addActor(titleTable);
 		stage.addActor(quitTable);
 		TIMESTEP = 0;
@@ -277,6 +279,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void resume() {
 		TIMESTEP = 1 / 60f;
+		totalPause +=(int) TimeUtils.timeSinceMillis(pauseTime);
 		stage.clear();
 		stage.addActor(pauseTable);
 		inputProcessor.setPause(false);
