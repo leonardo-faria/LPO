@@ -4,6 +4,10 @@ import aurelienribon.tweenengine.TweenAccessor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Class in charge of animations
+ *
+ */
 public class ActorAccessor implements TweenAccessor<Actor>{
 
 	public static final int Y = 0,RGB = 1,ALPHA = 2;

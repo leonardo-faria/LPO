@@ -1,7 +1,6 @@
 package com.Lpoo.game;
 
 import com.Lpoo.screens.LogoSplash;
-import com.Lpoo.screens.MainMenu;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -9,6 +8,10 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Json;
 
+/**
+ * Class used to start the game
+ * 
+ */
 public class JumpEm extends Game {
 
 	public static final String TITLE = "Jump'Em", VERSION = "ALPHA 0.1";

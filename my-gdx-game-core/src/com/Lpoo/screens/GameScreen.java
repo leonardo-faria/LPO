@@ -1,12 +1,13 @@
 package com.Lpoo.screens;
 
-import com.Lpoo.game.Floor;
 import com.Lpoo.game.JumpEm;
 import com.Lpoo.game.JumpEmCollision;
 import com.Lpoo.game.JumpEmInputProcessor;
-import com.Lpoo.game.Jumper;
-import com.Lpoo.game.Trampoline;
-import com.Lpoo.game.Wall;
+import com.Lpoo.game.entities.Floor;
+import com.Lpoo.game.entities.Jumper;
+import com.Lpoo.game.entities.Trampoline;
+import com.Lpoo.game.entities.Wall;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -27,16 +28,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-/*
- * TODO: track ball position
- */
 
 public class GameScreen implements Screen {
 	private World world;
@@ -62,15 +60,16 @@ public class GameScreen implements Screen {
 	private TextureAtlas atlas;
 	private Skin skin;
 
-	public TextButton pauseButton, quitButton;
+	public TextButton pauseButton;
+	public TextButton quitButton;
 
 	private float jumperRadius;
 	private long startTime, pauseTime;
 	private int totalPause;
 	private int score;
 	private int trampolineNumber;
-	float height;
-	float width;
+	private float height;
+	private float width;
 
 	@Override
 	public void render(float delta) {
@@ -95,8 +94,8 @@ public class GameScreen implements Screen {
 				float length = (float) Math.sqrt((coordf.x - coord0.x)
 						* (coordf.x - coord0.x) + (coordf.y - coord0.y)
 						* (coordf.y - coord0.y)) / 2;
-				if (length > 15)
-					length = 15;
+				if (length > jumperRadius*10)
+					length = jumperRadius*10;
 				if (length < 3)
 					length = 3;
 				float angle = (float) Math.atan2(coordf.y - coord0.y, coordf.x
@@ -202,23 +201,35 @@ public class GameScreen implements Screen {
 		titleTable.setFillParent(true);
 
 		BitmapFont white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
-		BitmapFont whiteSmall = new BitmapFont(Gdx.files.internal("font/white16.fnt"), false);
 
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
 		textButtonStyle.up = skin.getDrawable("wood");
 		textButtonStyle.down = skin.getDrawable("wood");
-		textButtonStyle.font = whiteSmall;
+		textButtonStyle.font = white;
 		textButtonStyle.fontColor = Color.WHITE;
 
 		pauseButton = new TextButton("Pause",textButtonStyle);
+		pauseButton.pad((float) (Gdx.graphics.getWidth() / 300.0)*10);
 		quitButton = new TextButton("Quit", textButtonStyle);
+		quitButton.pad((float) (Gdx.graphics.getWidth() / 300.0)*10);
 
 		pauseTable.add(pauseButton);
-		pauseTable.top().left();
 		pauseTable.debug();
 
 		quitTable.add(quitButton);
-		quitTable.bottom().left();
+		
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			pauseTable.setTransform(true);
+			pauseTable.top().left();
+			
+			quitTable.setTransform(true);
+			
+			titleTable.setTransform(true);
+			titleTable.setOrigin(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+			titleTable.setScale((float) (Gdx.graphics.getWidth() / 300.0));
+			quitTable.bottom().left();
+		}
+		
 		stage.addActor(pauseTable);
 
 
@@ -233,7 +244,7 @@ public class GameScreen implements Screen {
 		startTime = TimeUtils.millis();
 		totalPause = 0;
 		score = 0;
-		world = new World(new Vector2(0, -9.8f), true);
+		world = new World(new Vector2(0, -15f), true);
 
 		inputProcessor = new JumpEmInputProcessor(this);
 		collisionProcessor = new JumpEmCollision(world);
@@ -250,7 +261,7 @@ public class GameScreen implements Screen {
 		Vector3 size = new Vector3(width, height, 0);
 		camera.unproject(size);
 
-		jumperRadius = (float) (size.x / 25.0);
+		jumperRadius = (float) (size.x / 17.0);
 		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 3, 1, 0,"Wall");
 		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0,"Wall");
 		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
@@ -272,7 +283,6 @@ public class GameScreen implements Screen {
 		stage.addActor(titleTable);
 		stage.addActor(quitTable);
 		TIMESTEP = 0;
-		// TODO Auto-generated method stub
 
 	}
 
@@ -283,7 +293,6 @@ public class GameScreen implements Screen {
 		stage.clear();
 		stage.addActor(pauseTable);
 		inputProcessor.setPause(false);
-		// TODO Auto-generated method stub
 
 	}
 

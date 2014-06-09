@@ -1,6 +1,5 @@
-package com.Lpoo.game;
+package com.Lpoo.game.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,12 +12,23 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+/**
+ * Class used to create the jumpers as immovable objects that disappear when colliding
+ */
 public class Trampoline {
 	public Body body;
 	Fixture fixture;
 	float cx, cy, length, angle;
 	World world;
 	
+	/**
+	 * Creates a object of the class Jumper
+	 * @param world Where the body will be created
+	 * @param center Center of the trampoline
+	 * @param width length of the Floor
+	 * @param angle Angle of the floor with Axis
+	 * @param img Texture used for the jumper
+	 */
 	public Trampoline(World world, Vector2 center, float length, float angle, Texture img) {
 
 		this.world = world;

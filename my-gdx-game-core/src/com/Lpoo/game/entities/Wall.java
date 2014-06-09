@@ -1,9 +1,8 @@
-package com.Lpoo.game;
+package com.Lpoo.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -11,15 +10,27 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-
+/**
+ *  Class used to create the jumpers as immovable objects
+ */
 public class Wall {
 	public Body body;
 	Fixture fixture;
 	float cx, cy, height, width;
 
 	
+	/**
+	 *  Creates a object of the class Wall
+	 * @param world Where the body will be created
+	 * @param cx Center of the jumper
+	 * @param cy Center of the jumper
+	 * @param height Height of the Floor
+	 * @param width Width of the Floor
+	 * @param angle Angle of the floor with Axis
+	 * @param type Used for collisions
+	 */
 	public Wall(World world, float cx, float cy, float height, float width,
-			float angle,String user) {
+			float angle,String type) {
 
 		this.cx = cx;
 		this.cy = cy;
@@ -45,7 +56,7 @@ public class Wall {
 		body = world.createBody(bodyDef);
 		body.setUserData(sprt);
 		fixture = body.createFixture(fixtureDef);
-		fixture.setUserData(user);
+		fixture.setUserData(type);
 	}
 	
 	

@@ -1,6 +1,5 @@
-package com.Lpoo.game;
+package com.Lpoo.game.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -12,12 +11,23 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+/**
+ *  Class used to create the jumpers as dynamic Bodies
+ */
 public class Jumper{
 
 	public Body body;
 	Fixture fixture;
 	float cx, cy, r;
 
+	/**
+	 * Creates a object of the class Jumper
+	 * @param world Where the body will be created
+	 * @param cx Center of the jumper
+	 * @param cy Center of the jumper
+	 * @param r Radius of the jumper
+	 * @param img Texture used for the jumper
+	 */
 	public Jumper(World world, float cx, float cy, float r, Texture img) {
 
 		this.cx = cx;
