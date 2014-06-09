@@ -60,7 +60,7 @@ public class LogoSplash implements Screen{
 		Texture imgTramp = new Texture(Gdx.files.internal("img/wood.png"));
 		Texture imgBall = new Texture(Gdx.files.internal("img/redBall.png"));
 		Texture imgWall = new Texture(Gdx.files.internal("img/wood.png"));
-		Texture imgPaper = new Texture(Gdx.files.internal("img/forest.png"));
+		Texture imgPaper = new Texture(Gdx.files.internal("img/background.png"));
 		
 		JumpEm.imgBall = imgBall;
 		JumpEm.imgTramp = imgTramp;
