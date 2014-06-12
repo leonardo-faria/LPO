@@ -229,6 +229,9 @@ public class GameScreen implements Screen {
 			titleTable.setScale((float) (Gdx.graphics.getWidth() / 300.0));
 			quitTable.bottom().left();
 		}
+		pauseTable.top().left();
+		quitTable.bottom().left();
+		
 		
 		stage.addActor(pauseTable);
 
@@ -262,8 +265,8 @@ public class GameScreen implements Screen {
 		camera.unproject(size);
 
 		jumperRadius = (float) (size.x / 17.0);
-		left = new Wall(world, -size.x, 0, Math.abs(size.y) * 3, 1, 0,"Wall");
-		right = new Wall(world, size.x, 0, Math.abs(size.y) * 3, 1, 0,"Wall");
+		left = new Wall(world, -size.x-1f, 0, Math.abs(size.y) * 3, 1, 0,"Wall");
+		right = new Wall(world, size.x+1f, 0, Math.abs(size.y) * 3, 1, 0,"Wall");
 		floor = new Floor(world, 0, (float) (size.y - 1), 1, size.x, 0);
 		top = new Wall(world, 0, -size.y * 2, 1, size.x, 0, "Top");
 		jumpers = new Array<Jumper>();

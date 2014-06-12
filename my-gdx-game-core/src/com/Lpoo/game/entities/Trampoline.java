@@ -40,7 +40,7 @@ public class Trampoline {
 		shape.setAsBox(length , (float) 0.3);
 		
 		Sprite sprt = new Sprite(img);
-		sprt.setSize(length*2,0.6f);
+		sprt.setSize(length*2,1f);
 
 		sprt.setOriginCenter();
 		sprt.setRotation(MathUtils.radiansToDegrees* angle);
