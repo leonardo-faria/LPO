@@ -23,7 +23,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -214,9 +213,10 @@ public class GameScreen implements Screen {
 		quitButton.pad((float) (Gdx.graphics.getWidth() / 300.0)*10);
 
 		pauseTable.add(pauseButton);
-		pauseTable.debug();
+		pauseTable.top().left();
 
 		quitTable.add(quitButton);
+		quitTable.bottom().left();
 		
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			pauseTable.setTransform(true);
